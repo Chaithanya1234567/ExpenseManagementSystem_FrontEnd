@@ -17,5 +17,4 @@ export class Home {
     { icon: 'fa-solid fa-gear', label: 'Settings', route: '/settings' }
   ];
 
-  username = 'Chaithanya';
 }

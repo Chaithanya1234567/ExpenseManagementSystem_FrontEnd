@@ -1,0 +1,35 @@
+.expense-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+form input, form textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+}
+
+form button {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
