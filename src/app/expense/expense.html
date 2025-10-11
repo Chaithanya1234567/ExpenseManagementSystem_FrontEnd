@@ -1,45 +1,61 @@
-<div class="expense-container">
+<div class="expense-wrapper">
   <h2>Expense Management</h2>
 
-  <form (ngSubmit)="addExpense()" enctype="multipart/form-data">
-    <input type="number" placeholder="Employee Id" [(ngModel)]="newExpense.employeeId" name="employeeId" required>
-    <input type="number" placeholder="Expense Type Id" [(ngModel)]="newExpense.expensetypeId" name="expensetypeId" required>
-    <input type="number" placeholder="Amount" [(ngModel)]="newExpense.amount" name="amount" required>
-    <textarea placeholder="Description" [(ngModel)]="newExpense.description" name="description" required></textarea>
-    <input type="file" (change)="onFileChange($event)">
-    <button type="submit">Add Expense</button>
-  </form>
+  <!-- Add Expense Form -->
+  <div class="expense-form card">
+    <h3>Add New Expense</h3>
+    <form (ngSubmit)="addExpense()" enctype="multipart/form-data">
+      <div class="form-group">
+        <input type="number" placeholder="Employee Id" [(ngModel)]="newExpense.employeeId" name="employeeId" required>
+        <input type="number" placeholder="Expense Type Id" [(ngModel)]="newExpense.expensetypeId" name="expensetypeId" required>
+      </div>
+      <div class="form-group">
+        <input type="number" placeholder="Amount" [(ngModel)]="newExpense.amount" name="amount" required>
+        <input type="file" (change)="onFileChange($event)">
+      </div>
+      <textarea placeholder="Description" [(ngModel)]="newExpense.description" name="description" required></textarea>
+      <button type="submit" class="btn-primary">Add Expense</button>
+    </form>
+  </div>
 
   <hr>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>EmployeeId</th>
-        <th>TypeId</th>
-        <th>Amount</th>
-        <th>Description</th>
-        <th>Receipt</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let expense of expenses">
-        <td>{{expense.expenseId}}</td>
-        <td>{{expense.employeeId}}</td>
-        <td>{{expense.expensetypeId}}</td>
-        <td>{{expense.amount}}</td>
-        <td>{{expense.description}}</td>
-        <td>
-          <a *ngIf="expense.receiptUrl" [href]="expense.receiptUrl" target="_blank">View</a>
-        </td>
-        <td>{{expense.status}}</td>
-        <td>
-          <button (click)="deleteExpense(expense.expenseId)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Expenses Table -->
+  <div class="expense-table card">
+    <h3>All Expenses</h3>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Employee</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Receipt</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let expense of expenses">
+            <td>{{expense.expenseId}}</td>
+            <td>{{expense.employeeId}}</td>
+            <td>{{expense.expensetypeId}}</td>
+            <td>{{expense.amount | currency}}</td>
+            <td>{{expense.description}}</td>
+            <td>
+              <a *ngIf="expense.receiptUrl" [href]="expense.receiptUrl" target="_blank" class="btn-view">View</a>
+            </td>
+            <td>
+              <span class="status" [ngClass]="expense.status.toLowerCase()">{{expense.status}}</span>
+            </td>
+            <td>
+              <button class="btn-delete" (click)="deleteExpense(expense.expenseId)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

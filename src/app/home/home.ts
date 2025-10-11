@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ExpenseService } from '../expense/expense.service';
+import { Expense } from '../expense/expense.model';
 
 @Component({
   selector: 'app-home',
@@ -9,12 +11,6 @@ import { RouterModule } from '@angular/router';
   styleUrl: './home.css'
 })
 export class Home {
- menuItems = [
-    { icon: 'fa-solid fa-house', label: 'Dashboard', route: '/dashboard' },
-    { icon: 'fa-solid fa-wallet', label: 'Expenses', route: '/expenses' },
-    { icon: 'fa-solid fa-tags', label: 'Categories', route: '/categories' },
-    { icon: 'fa-solid fa-chart-line', label: 'Reports', route: '/reports' },
-    { icon: 'fa-solid fa-gear', label: 'Settings', route: '/settings' }
-  ];
+
 
 }

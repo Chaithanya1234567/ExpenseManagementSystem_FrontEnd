@@ -7,7 +7,7 @@ import { Expense } from './expense.model';
   providedIn: 'root'
 })
 export class ExpenseService {
-  private apiUrl = 'https://localhost:5001/api/Expense'; // Adjust your backend URL
+  private apiUrl = 'https://localhost:7000/api/Expense'; 
 
   constructor(private http: HttpClient) { }
 
@@ -29,5 +29,6 @@ export class ExpenseService {
 
   deleteExpense(id: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
+    
   }
 }

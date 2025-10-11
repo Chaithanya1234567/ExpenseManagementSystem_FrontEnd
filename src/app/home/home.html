@@ -1,33 +1,190 @@
-<div class="container">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <h2 class="logo">ExpensePro</h2>
-    <nav class="menu">
-      <a
-        *ngFor="let item of menuItems"
-        [routerLink]="item.route"
-        routerLinkActive="active"
-        class="menu-item"
-      >
-        <i class="{{ item.icon }}"></i>
-        <span>{{ item.label }}</span>
-      </a>
-    </nav>
-  </aside>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Header -->
-    <header class="header">
-      <input type="text" placeholder="Search" class="search-box" />
-      <div class="user-icon">
-        <i class="fa-solid fa-user-circle"></i>
-      </div>
+<div class="body">
+  
+  <div class="dashboard">
+    <header class="overview section">
+      <h1>Welcome to Expense Dashboard </h1>
+      <p>Monitor and manage your organization's expenses</p>
     </header>
 
-    <!-- Dynamic content (child routes will render here) -->
-    <main class="content">
-      <router-outlet></router-outlet>
-    </main>
+    <section class="stats-grid section">
+      <div class="stat-card">
+        <h3>This Month Expenses</h3>
+        <div class="stat-value">$67,340</div>
+        <div class="stat-subtext">+12.5% from last month</div>
+      </div>
+      <div class="stat-card">
+        <h3>Pending Requests</h3>
+        <div class="stat-value">24</div>
+        <div class="stat-subtext">Awaiting approval</div>
+      </div>
+      <div class="stat-card">
+        <h3>Approved This Week</h3>
+        <div class="stat-value">$18,420</div>
+        <div class="stat-subtext">42 requests approved</div>
+      </div>
+      <div class="stat-card">
+        <h3>Budget Remaining</h3>
+        <div class="stat-value">$132,660</div>
+        <div class="stat-subtext">66% of total budget</div>
+      </div>
+    </section>
+
+    <section class="recent-requests section">
+      <h2>Recent Requests</h2>
+      <p>Expense requests from employees</p>
+      <div class="request-item">
+        <div class="request-info">
+          <div class="request-name">John Doe</div>
+          <div class="request-meta">Travel • 2025-10-07</div>
+        </div>
+        <div class="request-amount">$1,250 <span class="status-pending">Pending</span></div>
+      </div>
+      <div class="request-item">
+        <div class="request-info">
+          <div class="request-name">Sarah Smith</div>
+          <div class="request-meta">Meals • 2025-10-08</div>
+        </div>
+        <div class="request-amount">$850 <span class="status-pending">Pending</span></div>
+      </div>
+      <div class="request-item">
+        <div class="request-info">
+          <div class="request-name">Mike Johnson</div>
+          <div class="request-meta">Accommodation • 2025-10-08</div>
+        </div>
+        <div class="request-amount">$2,400 <span class="status-pending">Pending</span></div>
+      </div>
+      <div class="request-item">
+        <div class="request-info">
+          <div class="request-name">Emily Davis</div>
+          <div class="request-meta">Transport • 2025-10-09</div>
+        </div>
+        <div class="request-amount">$320 <span class="status-pending">Pending</span></div>
+      </div>
+    </section>
+
+    <section class="quick-approvals section">
+      <h2>Quick Approvals</h2>
+      <p>Review and approve pending requests</p>
+
+      <div class="approval-item">
+        <div class="approval-info">John Doe — $1,250</div>
+        <div class="approval-buttons">
+          <button class="approve">Approve</button>
+          <button class="reject">Reject</button>
+        </div>
+      </div>
+      <div class="approval-item">
+        <div class="approval-info">Sarah Smith — $850</div>
+        <div class="approval-buttons">
+          <button class="approve">Approve</button>
+          <button class="reject">Reject</button>
+        </div>
+      </div>
+      <div class="approval-item">
+        <div class="approval-info">Mike Johnson — $2,400</div>
+        <div class="approval-buttons">
+          <button class="approve">Approve</button>
+          <button class="reject">Reject</button>
+        </div>
+      </div>
+      <div class="approval-item">
+        <div class="approval-info">Emily Davis — $320</div>
+        <div class="approval-buttons">
+          <button class="approve">Approve</button>
+          <button class="reject">Reject</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="expense-analysis section">
+      <h2>Expense Analysis</h2>
+      <p>Monthly expense trends and approvals</p>
+      <div class="bar-chart" aria-label="Monthly expense trends and approvals chart" role="img">
+        <div class="bar" style="height: 150px;">
+          <div class="bar-tooltip">$30,000 Total</div>
+        </div>
+        <div class="bar approved" style="height: 100px;">
+          <div class="bar-tooltip">$20,000 Approved</div>
+        </div>
+        <div class="bar" style="height: 170px;">
+          <div class="bar-tooltip">$34,000 Total</div>
+        </div>
+        <div class="bar approved" style="height: 110px;">
+          <div class="bar-tooltip">$22,000 Approved</div>
+        </div>
+        <div class="bar" style="height: 130px;">
+          <div class="bar-tooltip">$26,000 Total</div>
+        </div>
+        <div class="bar approved" style="height: 90px;">
+          <div class="bar-tooltip">$18,000 Approved</div>
+        </div>
+      </div>
+      <div class="chart-labels">
+        <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+      </div>
+    </section>
+
+    <section class="audit-log section">
+      <h2>Audit Log</h2>
+      <p>Track all expense-related activities</p>
+
+      <table class="audit-log">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Date &amp; Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Expense Approved</td>
+            <td>Admin User</td>
+            <td>$1,500</td>
+            <td>2025-10-09 14:32</td>
+            <td class="status-approved">approved</td>
+          </tr>
+          <tr>
+            <td>Expense Submitted</td>
+            <td>John Doe</td>
+            <td>$1,250</td>
+            <td>2025-10-09 11:15</td>
+            <td class="status-submitted">submitted</td>
+          </tr>
+          <tr>
+            <td>Expense Rejected</td>
+            <td>Admin User</td>
+            <td>$3,200</td>
+            <td>2025-10-08 16:45</td>
+            <td class="status-rejected">rejected</td>
+          </tr>
+          <tr>
+            <td>Expense Approved</td>
+            <td>Admin User</td>
+            <td>$890</td>
+            <td>2025-10-08 10:22</td>
+            <td class="status-approved">approved</td>
+          </tr>
+          <tr>
+            <td>Expense Submitted</td>
+            <td>Sarah Smith</td>
+            <td>$850</td>
+            <td>2025-10-08 09:30</td>
+            <td class="status-submitted">submitted</td>
+          </tr>
+          <tr>
+            <td>Budget Updated</td>
+            <td>Finance Manager</td>
+            <td>$50,000</td>
+            <td>2025-10-07 13:00</td>
+            <td class="status-updated">updated</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   </div>
+
+
 </div>
