@@ -1,0 +1,6 @@
+.categories-container { padding: 1rem; }
+.list-and-form { display: flex; gap: 2rem; align-items: flex-start; }
+.list table { border-collapse: collapse; width: 100%; }
+.list th, .list td { border: 1px solid #ddd; padding: 6px 8px; }
+.form { min-width: 240px; border: 1px solid #eee; padding: 12px; border-radius: 6px; }
+.error { color: red; margin-bottom: 8px; }
