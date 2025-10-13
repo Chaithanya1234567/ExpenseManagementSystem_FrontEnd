@@ -1,7 +1,6 @@
 export interface Approval {
-  approvalId?: number;
   expenseId: number;
   approverId: number;
-  approvalStatus?: string;
-  actionDate?: string;
+  approvalStatus?: 'approved' | 'rejected';
+  actionDate?: string; // or Date
 }

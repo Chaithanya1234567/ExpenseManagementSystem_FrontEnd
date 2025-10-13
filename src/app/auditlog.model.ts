@@ -3,7 +3,7 @@ export interface AuditLog {
   actionById: string;
   action: string;
   expenseId?: number;
-  actionDate: string;
+  actionDate: Date;
   amount?: number;
-  status?: string;
+  status?: 'approved' | 'rejected' | 'submitted' | 'updated';
 }

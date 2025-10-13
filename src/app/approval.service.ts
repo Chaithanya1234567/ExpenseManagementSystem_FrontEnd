@@ -11,15 +11,21 @@ export class ApprovalService {
 
   constructor(private http: HttpClient) {}
 
+  approve(expenseId: number, approverId: number): Observable<any> {
+    const payload: Approval = { expenseId, approverId };
+    return this.http.post(`${this.apiUrl}/approve`, payload);
+  }
+
+  reject(expenseId: number, approverId: number): Observable<any> {
+    const payload: Approval = { expenseId, approverId };
+    return this.http.post(`${this.apiUrl}/reject`, payload);
+  }
+
   getAllApprovals(): Observable<Approval[]> {
     return this.http.get<Approval[]>(this.apiUrl);
   }
 
-  approveExpense(approval: Approval): Observable<any> {
-    return this.http.post(`${this.apiUrl}/approve`, approval);
-  }
-
-  rejectExpense(approval: Approval): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reject`, approval);
+  getApprovalsByExpense(expenseId: number): Observable<Approval[]> {
+    return this.http.get<Approval[]>(`${this.apiUrl}/${expenseId}`);
   }
 }

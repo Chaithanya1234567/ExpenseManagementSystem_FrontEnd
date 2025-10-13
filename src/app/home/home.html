@@ -9,12 +9,12 @@
     <section class="stats-grid section">
       <div class="stat-card">
         <h3>This Month Expenses</h3>
-        <div class="stat-value">$67,340</div>
+        <div class="stat-value">{{ thisMonthExpenses | currency:'USD' }}</div>
         <div class="stat-subtext">+12.5% from last month</div>
       </div>
       <div class="stat-card">
         <h3>Pending Requests</h3>
-        <div class="stat-value">24</div>
+        <div class="stat-value">{{ pendingRequests || 0 }}</div>
         <div class="stat-subtext">Awaiting approval</div>
       </div>
       <div class="stat-card">
@@ -66,32 +66,16 @@
       <h2>Quick Approvals</h2>
       <p>Review and approve pending requests</p>
 
-      <div class="approval-item">
-        <div class="approval-info">John Doe — $1,250</div>
-        <div class="approval-buttons">
-          <button class="approve">Approve</button>
-          <button class="reject">Reject</button>
-        </div>
-      </div>
-      <div class="approval-item">
-        <div class="approval-info">Sarah Smith — $850</div>
-        <div class="approval-buttons">
-          <button class="approve">Approve</button>
-          <button class="reject">Reject</button>
-        </div>
-      </div>
-      <div class="approval-item">
-        <div class="approval-info">Mike Johnson — $2,400</div>
-        <div class="approval-buttons">
-          <button class="approve">Approve</button>
-          <button class="reject">Reject</button>
-        </div>
-      </div>
-      <div class="approval-item">
-        <div class="approval-info">Emily Davis — $320</div>
-        <div class="approval-buttons">
-          <button class="approve">Approve</button>
-          <button class="reject">Reject</button>
+      <div class="approval-item" *ngFor="let request of pendingRequestsList">
+        <div class="approval-info">
+      <strong>{{ request.employeeName }}</strong> |
+      {{ request.expenseType }} |
+      {{ request.date | date:'shortDate' }} |
+      ${{ request.amount }}
+    </div>
+        <div class="approval-buttons">  
+          <button class="approve" (click)="approveRequest(request)">Approve</button>
+          <button class="reject" (click)="rejectRequest(request)">Reject</button>
         </div>
       </div>
     </section>
@@ -139,47 +123,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Expense Approved</td>
-            <td>Admin User</td>
-            <td>$1,500</td>
-            <td>2025-10-09 14:32</td>
-            <td class="status-approved">approved</td>
-          </tr>
-          <tr>
-            <td>Expense Submitted</td>
-            <td>John Doe</td>
-            <td>$1,250</td>
-            <td>2025-10-09 11:15</td>
-            <td class="status-submitted">submitted</td>
-          </tr>
-          <tr>
-            <td>Expense Rejected</td>
-            <td>Admin User</td>
-            <td>$3,200</td>
-            <td>2025-10-08 16:45</td>
-            <td class="status-rejected">rejected</td>
-          </tr>
-          <tr>
-            <td>Expense Approved</td>
-            <td>Admin User</td>
-            <td>$890</td>
-            <td>2025-10-08 10:22</td>
-            <td class="status-approved">approved</td>
-          </tr>
-          <tr>
-            <td>Expense Submitted</td>
-            <td>Sarah Smith</td>
-            <td>$850</td>
-            <td>2025-10-08 09:30</td>
-            <td class="status-submitted">submitted</td>
-          </tr>
-          <tr>
-            <td>Budget Updated</td>
-            <td>Finance Manager</td>
-            <td>$50,000</td>
-            <td>2025-10-07 13:00</td>
-            <td class="status-updated">updated</td>
+          <tr *ngFor="let log of auditLogs">
+            <td>{{ log.action }}</td> 
+            <td>{{ log.actionById }}</td> 
+            <td>{{ log.amount ? ('$' + log.amount) : '-' }}</td>
+            <td>{{ log.actionDate | date:'yyyy-MM-dd HH:mm' }}</td> 
+            <td [ngClass]="{
+                  'status-approved': log.status === 'approved',
+                  'status-rejected': log.status === 'rejected',
+                  'status-submitted': log.status === 'submitted',
+                  'status-updated': log.status === 'updated'
+                }">{{ log.status }}</td> 
           </tr>
         </tbody>
       </table>
