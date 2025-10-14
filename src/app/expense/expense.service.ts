@@ -28,7 +28,10 @@ export class ExpenseService {
   }
 
   deleteExpense(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
-    
+    return this.http.delete<boolean>(`${this.apiUrl}/${id}`);    
+  }
+  
+  getRecentExpenses(count: number = 5): Observable<Expense[]> {
+    return this.http.get<Expense[]>(`${this.apiUrl}/recent?count=${count}`);
   }
 }

@@ -36,41 +36,23 @@
     of ${{ stats()?.totalBudget || 0 | number:'1.0-0' }} total budget
   </div>
 </div>
+</section>
 
-    </section>
+<section class="recent-requests section">
+  <h2>Recent Requests</h2>
+  <p>Expense requests from employees</p>
 
-    <section class="recent-requests section">
-      <h2>Recent Requests</h2>
-      <p>Expense requests from employees</p>
-      <div class="request-item">
-        <div class="request-info">
-          <div class="request-name">John Doe</div>
-          <div class="request-meta">Travel • 2025-10-07</div>
-        </div>
-        <div class="request-amount">$1,250 <span class="status-pending">Pending</span></div>
-      </div>
-      <div class="request-item">
-        <div class="request-info">
-          <div class="request-name">Sarah Smith</div>
-          <div class="request-meta">Meals • 2025-10-08</div>
-        </div>
-        <div class="request-amount">$850 <span class="status-pending">Pending</span></div>
-      </div>
-      <div class="request-item">
-        <div class="request-info">
-          <div class="request-name">Mike Johnson</div>
-          <div class="request-meta">Accommodation • 2025-10-08</div>
-        </div>
-        <div class="request-amount">$2,400 <span class="status-pending">Pending</span></div>
-      </div>
-      <div class="request-item">
-        <div class="request-info">
-          <div class="request-name">Emily Davis</div>
-          <div class="request-meta">Transport • 2025-10-09</div>
-        </div>
-        <div class="request-amount">$320 <span class="status-pending">Pending</span></div>
-      </div>
-    </section>
+  <div class="requests-container">
+    <div class="request-card" *ngFor="let req of recentRequests">
+      <h3>{{ req.employeeName }}</h3>
+      <p>Expense Type: {{ req.expenseTypeName }} • {{ req.date | date:'yyyy-MM-dd' }}</p>
+      <p>{{ req.amount | currency:'USD' }}</p>
+      <span class="status">{{ req.status }}</span>
+    </div>
+  </div>
+</section>
+
+
 
     <section class="quick-approvals section">
       <h2>Quick Approvals</h2>
@@ -148,7 +130,5 @@
         </tbody>
       </table>
     </section>
-  </div>
 
 
-</div>

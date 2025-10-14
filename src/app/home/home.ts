@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ExpenseService } from '../expense/expense.service';
 import { Expense } from '../expense/expense.model';
 import { HomeService } from './home.service';
-import { OnInit } from '@angular/core';
 import { AuditLogService } from '../auditlog.service';
 import { AuditLog } from '../auditlog.model';
 import { ApprovalService } from '../approval.service';
 import { signal } from '@angular/core';
 import { DashboardStats } from './dashboard.service';
 import { DashboardService } from './dashboard.service';
+import { Component,OnInit,Signal } from '@angular/core';  
+
+
 
 interface PendingRequest {
   employeeName: string;
@@ -21,17 +22,27 @@ interface PendingRequest {
   approverId: number;
 }
 
+interface RecentRequest {
+  employeeName: string;
+  expenseTypeName: string;
+  date: string;
+  amount: number;
+  status: string;
+}
+
 @Component({
   selector: 'app-home',
   imports: [CommonModule,RouterModule],
   templateUrl: './home.html',
-  styleUrls: ['./home.css'] 
+  styleUrls: ['./home.css'] ,
+  standalone: true
 })
 export class Home implements OnInit {
   thisMonthExpenses: number = 0;
   pendingRequests: number = 0;
   pendingRequestsList: PendingRequest[] = [];
   auditLogs: AuditLog[] = [];
+   recentRequests: RecentRequest[] = [];
   // loading = true;
   stats = signal<DashboardStats | null>(null);
   loading = signal(false);
@@ -40,13 +51,15 @@ export class Home implements OnInit {
   constructor(private homeService: HomeService ,
     private auditLogService: AuditLogService,
     private approvalService: ApprovalService,
-    private dashboardSvc: DashboardService
+    private dashboardSvc: DashboardService,
+    private expenseService: ExpenseService
   ) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
     this.loadAuditLogs();
     this.fetchDashboardStats();
+     this.loadRecentRequests(); 
   }
 
   loadDashboardData(): void {
@@ -99,6 +112,7 @@ export class Home implements OnInit {
   refreshDashboard() {
     this.loadDashboardData();
     this.loadAuditLogs();
+    this.loadRecentRequests();
   }
   
   fetchDashboardStats() {
@@ -113,6 +127,20 @@ export class Home implements OnInit {
         this.loading.set(false);
       }
     });
+    
   }
-
+ loadRecentRequests(): void {
+  this.expenseService.getRecentExpenses(5).subscribe({
+    next: (data: any[]) => {
+      this.recentRequests = data.map(exp => ({
+        employeeName: exp.employeeName,
+        expenseTypeName: exp.expenseTypeName,
+        date: exp.expenseDate,   
+        amount: exp.amount,
+        status: exp.status
+      }));
+    },
+    error: (err: any) => console.error('Error loading recent requests:', err)
+  });
+}
 }

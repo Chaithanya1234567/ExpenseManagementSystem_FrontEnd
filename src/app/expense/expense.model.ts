@@ -1,6 +1,8 @@
 export interface Expense {
   expenseId: number;
   employeeId: number;
+  employeeName?: string;
+  expenseTypeName?: string;
   expensetypeId: number;
   amount: number;
   expenseDate: string;

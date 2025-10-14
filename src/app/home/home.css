@@ -1,9 +1,9 @@
-/* Reset some basics */
+/* ===== Reset Basics ===== */
 * {
   box-sizing: border-box;
 }
 
-.body {
+body, .body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #f9fafd;
   color: #333;
@@ -15,20 +15,9 @@ h1, h2, h3 {
   margin: 0 0 10px 0;
 }
 
-h1 {
-  font-weight: 700;
-  font-size: 28px;
-}
-
-h2 {
-  font-weight: 600;
-  font-size: 22px;
-}
-
-h3 {
-  font-weight: 600;
-  font-size: 18px;
-}
+h1 { font-weight: 700; font-size: 28px; }
+h2 { font-weight: 600; font-size: 22px; }
+h3 { font-weight: 600; font-size: 18px; }
 
 .dashboard {
   max-width: 1200px;
@@ -43,7 +32,7 @@ h3 {
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
 }
 
-/* Overview header */
+/* ===== Overview Header ===== */
 .overview {
   margin-bottom: 30px;
 }
@@ -52,16 +41,15 @@ h3 {
   color: #666;
 }
 
-/* Stats grid */
+/* ===== Stats Grid ===== */
 .stats-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  flex-wrap: wrap;
 }
 
 .stat-card {
   background: #f1f6ff;
-  flex: 1 1 200px;
   border-radius: 8px;
   padding: 20px;
 }
@@ -88,54 +76,51 @@ h3 {
   color: #e74c3c; /* red */
 }
 
-/* Recent Requests list */
-.recent-requests {
-  margin-top: 10px;
-}
-.request-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-}
-.request-item:last-child {
-  border-bottom: none;
-}
-.request-info {
-  display: flex;
-  flex-direction: column;
-}
-.request-name {
-  font-weight: 600;
-  font-size: 16px;
-}
-.request-meta {
-  color: #888;
-  font-size: 14px;
-  margin-top: 3px;
-}
-.request-amount {
-  font-weight: 700;
-  font-size: 16px;
-}
-.status-pending {
-  color: #f39c12;
-  font-weight: 600;
-  margin-left: 15px;
+/* ===== Recent Requests Grid ===== */
+.requests-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 }
 
-/* Quick approvals */
-.quick-approvals .approval-item {
+.request-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 1rem;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+}
+
+.request-card h3 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.request-card p {
+  margin: 0.25rem 0;
+}
+
+.status {
+  font-weight: bold;
+  color: orange;
+}
+
+/* ===== Quick Approvals ===== */
+.quick-approvals .approval-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
   margin-bottom: 15px;
+  gap: 10px;
 }
+
 .approval-info {
   font-weight: 600;
   font-size: 16px;
 }
+
 .approval-buttons button {
   background: #3498db;
   border: none;
@@ -144,28 +129,24 @@ h3 {
   border-radius: 5px;
   font-weight: 600;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 5px;
   transition: background-color 0.3s ease;
 }
+
 .approval-buttons button.reject {
   background: #e74c3c;
 }
+
 .approval-buttons button:hover {
   opacity: 0.9;
 }
 
-/* Expense analysis chart placeholder */
+/* ===== Expense Analysis Chart ===== */
 .expense-analysis {
   display: flex;
   flex-direction: column;
 }
-.chart-labels {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 10px;
-  font-size: 14px;
-  color: #666;
-}
+
 .bar-chart {
   position: relative;
   height: 200px;
@@ -176,21 +157,16 @@ h3 {
   padding: 0 15px;
   gap: 12px;
 }
+
 .bar {
   background: #3498db;
   width: 30px;
   border-radius: 6px 6px 0 0;
   position: relative;
 }
-.bar.approved {
-  background: #27ae60;
-}
-.bar-label {
-  font-size: 12px;
-  text-align: center;
-  margin-top: 6px;
-  color: #333;
-}
+
+.bar.approved { background: #27ae60; }
+
 .bar-tooltip {
   position: absolute;
   bottom: 100%;
@@ -207,61 +183,58 @@ h3 {
   transition: opacity 0.2s ease;
   white-space: nowrap;
 }
+
 .bar:hover .bar-tooltip {
   visibility: visible;
   opacity: 1;
 }
 
-/* Audit log table */
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* ===== Audit Log Table ===== */
 table.audit-log {
   width: 100%;
   border-collapse: collapse;
 }
+
 table.audit-log th, table.audit-log td {
   padding: 12px 15px;
   border-bottom: 1px solid #ddd;
   text-align: left;
   font-size: 14px;
 }
+
 table.audit-log th {
   background: #f4f6fc;
   font-weight: 600;
   color: #555;
 }
+
 table.audit-log tbody tr:hover {
   background: #f0f4f8;
 }
-.status-approved {
-  color: #27ae60;
-  font-weight: 600;
-}
-.status-submitted {
-  color: #2980b9;
-  font-weight: 600;
-}
-.status-rejected {
-  color: #e74c3c;
-  font-weight: 600;
-}
-.status-updated {
-  color: #f39c12;
-  font-weight: 600;
-}
 
-/* Responsive */
+.status-approved { color: #27ae60; font-weight: 600; }
+.status-submitted { color: #2980b9; font-weight: 600; }
+.status-rejected { color: #e74c3c; font-weight: 600; }
+.status-updated { color: #f39c12; font-weight: 600; }
+
+/* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .stats-grid {
-    flex-direction: column;
-  }
-  .stat-card {
-    flex: 1 1 100%;
-  }
+  .stats-grid { grid-template-columns: 1fr; }
+
   .quick-approvals .approval-item {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: 1fr;
     gap: 8px;
   }
-  .approval-buttons {
-    display: flex;
-  }
+
+  .approval-buttons { display: flex; justify-content: flex-start; }
+
+  .requests-container { grid-template-columns: 1fr; }
 }
