@@ -1,0 +1,57 @@
+<section class="report section">
+  <h2>Expense Report</h2>
+
+  <div class="filters">
+    <label>
+      Start Date
+      <input type="date" [(ngModel)]="startDate" (change)="filterExpenses()">
+    </label>
+    <label>
+      End Date
+      <input type="date" [(ngModel)]="endDate" (change)="filterExpenses()">
+    </label>
+    <label>
+      Status
+      <select [(ngModel)]="statusFilter" (change)="filterExpenses()">
+        <option value="">All</option>
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="table-container">
+    <table class="expense-report">
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Expense Type</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exp of filteredExpenses">
+          <td>{{ exp.employeeName }}</td>
+          <td>{{ exp.expenseTypeName }}</td>
+          <td>{{ exp.amount | currency:'USD' }}</td>
+          <td>{{ exp.expenseDate | date:'yyyy-MM-dd' }}</td>
+          <td [ngClass]="{
+                'status-pending': exp.status === 'Pending',
+                'status-approved': exp.status === 'Approved',
+                'status-rejected': exp.status === 'Rejected'
+              }">{{ exp.status }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2"><strong>Total</strong></td>
+          <td colspan="3">{{ getTotalAmount() | currency:'USD' }}</td>
+        </tr>
+      </tfoot>
+    </table>
+            <button class="export-btn" (click)="exportReport()" >Export Pdf</button>
+  </div>
+</section>
