@@ -11,16 +11,31 @@ export class ApprovalService {
 
   constructor(private http: HttpClient) {}
 
-  approve(expenseId: number, approverId: number): Observable<any> {
-    const payload: Approval = { expenseId, approverId };
-    return this.http.post(`${this.apiUrl}/approve`, payload);
-  }
+  approve(expenseId: number, approverId: number, approverName: string = 'Manager'): Observable<any> {
+    const payload = {
+    approvalId: 0,         // new approval
+    expenseId,
+    approverId,
+    approverName: 'Manager',
+    approvalStatus: 'Pending',    
+    comments: '',                 
+    actionDate: new Date().toISOString()
+  };
+  return this.http.post(`${this.apiUrl}/approve`, payload);
+}
 
-  reject(expenseId: number, approverId: number): Observable<any> {
-    const payload: Approval = { expenseId, approverId };
-    return this.http.post(`${this.apiUrl}/reject`, payload);
-  }
-
+  reject(expenseId: number, approverId: number, approverName: string = 'Manager'): Observable<any> {
+  const payload = {
+    approvalId: 0,
+    expenseId,
+    approverId,
+    approverName: 'Manager',
+    approvalStatus: 'Pending',
+    comments: '',
+    actionDate: new Date().toISOString()
+  };
+  return this.http.post(`${this.apiUrl}/reject`, payload);
+}
   getAllApprovals(): Observable<Approval[]> {
     return this.http.get<Approval[]>(this.apiUrl);
   }

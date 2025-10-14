@@ -2,6 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 
+export interface PendingRequest {
+  expenseId: number;
+  approverId: number;
+  employeeName: string;
+  expenseType: string;
+  date: string;
+  amount: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +23,8 @@ export class HomeService {
     return this.http.get<number>(`${this.apiUrl}/this-month-expenses`);
   }
 
-  getPendingRequests(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/pending-requests`);
+  getPendingRequests(): Observable<PendingRequest[]> {
+    return this.http.get<PendingRequest[]>(`${this.apiUrl}/pending-requests`);
   }  
   }
 

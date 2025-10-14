@@ -58,15 +58,8 @@ export class Home implements OnInit {
     this.homeService.getPendingRequests().subscribe({
   next: (data) => {
     if (Array.isArray(data)) {
-      this.pendingRequests = data.length;  // count
-      this.pendingRequestsList = data.map(item => ({
-        expenseId: item.expenseId,
-        approverId: item.approverId,
-        employeeName: item.employeeName,
-        expenseType: item.expenseType, 
-        date: item.date, 
-        amount: item.amount
-      }));
+      this.pendingRequests = data.length;  
+      this.pendingRequestsList = data;
     } else {
      
       this.pendingRequests = 0;
@@ -87,13 +80,16 @@ export class Home implements OnInit {
     });
   }
   approveRequest(request: PendingRequest) {
+    const approverName = 'Manager';
     this.approvalService.approve(request.expenseId, request.approverId).subscribe({
       next: () => this.refreshDashboard(),
+      
       error: (err) => console.error('Error approving expense', err)
     });
   }
 
   rejectRequest(request: PendingRequest) {
+    const approverName = 'Manager';
     this.approvalService.reject(request.expenseId, request.approverId).subscribe({
       next: () => this.refreshDashboard(),
       error: (err) => console.error('Error rejecting expense', err)
