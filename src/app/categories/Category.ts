@@ -1,7 +1,5 @@
 export interface Category {
-  id: number;
-  name: string;
-  description?: string;
-  createdDate?: Date;
-  isActive?: boolean;
+  expenseTypeId: number;
+  expenseTypeName: string;
+  description:string;
 }

@@ -8,6 +8,9 @@ import { OnInit } from '@angular/core';
 import { AuditLogService } from '../auditlog.service';
 import { AuditLog } from '../auditlog.model';
 import { ApprovalService } from '../approval.service';
+import { signal } from '@angular/core';
+import { DashboardStats } from './dashboard.service';
+import { DashboardService } from './dashboard.service';
 
 interface PendingRequest {
   employeeName: string;
@@ -29,17 +32,21 @@ export class Home implements OnInit {
   pendingRequests: number = 0;
   pendingRequestsList: PendingRequest[] = [];
   auditLogs: AuditLog[] = [];
-
-  loading = true;
+  // loading = true;
+  stats = signal<DashboardStats | null>(null);
+  loading = signal(false);
+  error = signal<string | null>(null);
 
   constructor(private homeService: HomeService ,
     private auditLogService: AuditLogService,
-    private approvalService: ApprovalService 
+    private approvalService: ApprovalService,
+    private dashboardSvc: DashboardService
   ) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
     this.loadAuditLogs();
+    this.fetchDashboardStats();
   }
 
   loadDashboardData(): void {
@@ -65,11 +72,11 @@ export class Home implements OnInit {
       this.pendingRequests = 0;
       this.pendingRequestsList = [];
     }
-        this.loading = false;
+        this.loading.set(false);
       },
       error: (err) => {
         console.error('Error fetching pending requests', err);
-        this.loading = false;
+        this.loading.set(false);
       }
     });
   }
@@ -97,4 +104,19 @@ export class Home implements OnInit {
     this.loadDashboardData();
     this.loadAuditLogs();
   }
+  
+  fetchDashboardStats() {
+    this.loading.set(true);
+    this.dashboardSvc.getStats().subscribe({
+      next: (res) => {
+        this.stats.set(res);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('Failed to load dashboard data');
+        this.loading.set(false);
+      }
+    });
   }
+
+}

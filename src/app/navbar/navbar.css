@@ -129,3 +129,8 @@ body {
 .dashboard-placeholder {
   padding: 30px;
 }
+.dashboard-placeholder {
+  padding: 30px;
+  margin-left: 240px; /* push content to the right */
+  margin-top: 80px;   /* avoid overlapping with top navbar */
+}

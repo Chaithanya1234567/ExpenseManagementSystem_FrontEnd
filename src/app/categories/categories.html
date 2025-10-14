@@ -1,43 +1,77 @@
 <div class="categories-container">
   <h2>Categories</h2>
 
-  <div *ngIf="loading()">
-    Loading categories...
+  <div *ngIf="loading()" class="loading">
+    <div class="spinner"></div>
+    <p>Loading categories...</p>
   </div>
 
-  <div *ngIf="error()" class="error">
-    {{ error() }}
+  <div *ngIf="error()" class="error-banner">
+    <span>{{ error() }}</span>
   </div>
 
-  <div class="list-and-form">
-    <div class="list">
-      <button (click)="startAdd()">+ Add Category</button>
-      <table>
+  <div class="content-wrapper">
+    <!-- List Section -->
+    <div class="card list">
+      <div class="header-bar">
+        <h3>Categories List</h3>
+        <button class="add-btn" (click)="startAdd()">
+          <i class="fa fa-plus"></i> Add Category
+        </button>
+      </div>
+
+      <table class="styled-table">
         <thead>
-          <tr><th>ID</th><th>Name</th><th>Actions</th></tr>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th style="text-align:center;">Actions</th>
+          </tr>
         </thead>
         <tbody>
           <tr *ngFor="let c of categories()">
-            <td>{{ c.id }}</td>
-            <td>{{ c.name }}</td>
-            <td>
-              <button (click)="startEdit(c)">Edit</button>
-              <button (click)="delete(c)">Delete</button>
+            <td>{{ c.expenseTypeId }}</td>
+            <td>{{ c.expenseTypeName }}</td>
+            <td>{{ c.description }}</td>
+            <td class="actions">
+              <button class="edit-btn" (click)="startEdit(c)">
+                <i class="fa fa-edit"></i> Edit
+              </button>
+              <button class="delete-btn" (click)="delete(c)">
+                <i class="fa fa-trash"></i> Delete
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="form">
+    <!-- Form Section -->
+    <div class="card form">
       <h3>{{ current ? 'Edit' : 'Add' }} Category</h3>
-      <label>
-        Name
-        <input [(ngModel)]="nameModel" />
-      </label>
+
+      <div class="form-group">
+        <label>Name</label>
+        <input
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Enter expense type name"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <input
+          name="description"
+          [(ngModel)]="description"
+          placeholder="Enter description"
+        />
+      </div>
+
       <div class="form-actions">
-        <button (click)="save()">Save</button>
-        <button (click)="cancel()">Cancel</button>
+        <button class="save-btn" (click)="save()">💾 Save</button>
+        <button class="cancel-btn" (click)="cancel()">✖ Cancel</button>
       </div>
     </div>
   </div>

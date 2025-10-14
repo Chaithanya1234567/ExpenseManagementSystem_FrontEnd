@@ -1,25 +1,23 @@
 import { Component, signal } from '@angular/core';
-import { Category } from './Category';
-import { CategoryService } from './category-service';
-import { Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Category } from './Category'; 
+import { CategoryService } from './category-service';
 
 @Component({
   selector: 'app-categories',
-    imports: [CommonModule, FormsModule],
-
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './categories.html',
-  styleUrl: './categories.css'
+  styleUrls: ['./categories.css']
 })
 export class Categories {
-categories = signal<Category[]>([]);
+  categories = signal<Category[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
-
-  // form model for add / edit
   current: Category | null = null;
-  nameModel = '';
+  name = '';
+  description='';
 
   constructor(private svc: CategoryService) {
     this.load();
@@ -27,49 +25,61 @@ categories = signal<Category[]>([]);
 
   load() {
     this.loading.set(true);
-    this.error.set(null);
     this.svc.getAll().subscribe({
-      next: (res) => { this.categories.set(res || []); this.loading.set(false); },
-      error: (err) => { this.error.set('Failed to load categories'); this.loading.set(false); console.error(err); }
+      next: (res) => {
+        this.categories.set(res);
+        console.log(this.categories.name);
+        console.log(this.categories);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('Failed to load categories');
+        this.loading.set(false);
+      }
     });
   }
 
   startAdd() {
     this.current = null;
-    this.nameModel = '';
+    this.name = '';
+    this.description='';
   }
 
   startEdit(cat: Category) {
     this.current = { ...cat };
-    this.nameModel = this.current.name ?? '';
+    this.name = this.current.expenseTypeName;
+    this.description=this.current.description;
   }
 
-  save() {
-    const payload: Category = this.current ? { ...this.current, name: this.nameModel } : { id: 0, name: this.nameModel };
+save() {
+  const payload: Category = this.current
+    ? { ...this.current, expenseTypeName: this.name, description: this.description }
+    : { expenseTypeId: 0, expenseTypeName: this.name, description: this.description };
 
-    if (this.current && (this.current.id ?? 0) > 0) {
-      this.svc.update(payload).subscribe({
-        next: () => { this.load(); this.current = null; this.nameModel = ''; },
-        error: (e) => { console.error(e); this.error.set('Update failed'); }
-      });
-    } else {
-      this.svc.create(payload).subscribe({
-        next: () => { this.load(); this.nameModel = ''; },
-        error: (e) => { console.error(e); this.error.set('Create failed'); }
-      });
-    }
-  }
+  const request = this.current
+    ? this.svc.update(payload)
+    : this.svc.create(payload);
+
+  request.subscribe({
+    next: () => {
+      this.load();
+      this.cancel();
+    },
+    error: () => this.error.set('Save failed')
+  });
+}
 
   cancel() {
     this.current = null;
-    this.nameModel = '';
+    this.name = '';
+    this.description='';
   }
 
   delete(cat: Category) {
-    if (!confirm(`Delete category "${cat.name}" ?`)) return;
-    this.svc.delete(cat.id!).subscribe({
+    if (!confirm(`Delete category "${cat.expenseTypeName}"?`)) return;
+    this.svc.delete(cat.expenseTypeId).subscribe({
       next: () => this.load(),
-      error: (e) => { console.error(e); this.error.set('Delete failed'); }
+      error: () => this.error.set('Delete failed')
     });
   }
 }

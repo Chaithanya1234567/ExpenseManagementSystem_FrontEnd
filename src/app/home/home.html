@@ -18,15 +18,25 @@
         <div class="stat-subtext">Awaiting approval</div>
       </div>
       <div class="stat-card">
-        <h3>Approved This Week</h3>
-        <div class="stat-value">$18,420</div>
-        <div class="stat-subtext">42 requests approved</div>
-      </div>
-      <div class="stat-card">
-        <h3>Budget Remaining</h3>
-        <div class="stat-value">$132,660</div>
-        <div class="stat-subtext">66% of total budget</div>
-      </div>
+  <h3>Approved This Week</h3>
+  <div class="stat-value">
+    ${{ stats()?.approvedThisWeekAmount || 0 | number:'1.0-0' }}
+  </div>
+  <div class="stat-subtext">
+    {{ stats()?.approvedThisWeekCount || 0 }} requests approved
+  </div>
+</div>
+
+<div class="stat-card">
+  <h3>Budget Remaining</h3>
+  <div class="stat-value">
+    ${{ stats()?.remainingAmount || 0 | number:'1.0-0' }}
+  </div>
+  <div class="stat-subtext">
+    of ${{ stats()?.totalBudget || 0 | number:'1.0-0' }} total budget
+  </div>
+</div>
+
     </section>
 
     <section class="recent-requests section">
