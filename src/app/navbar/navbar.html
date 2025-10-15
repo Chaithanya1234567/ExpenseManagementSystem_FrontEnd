@@ -1,26 +1,30 @@
 <div class="layout">
   <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="logo">ExpenseHub</div>
+    <div class="logo">💰 ExpenseHub</div>
     <nav class="nav-menu">
-      <a  class="nav-link" routerLink="/home" routerLinkActive="active">Dashboard</a>
-      <a class="nav-link" routerLink="/expenses" routerLinkActive="active">Expenses</a>
-       <a class="nav-link" routerLink="/categories" routerLinkActive="active">Categories</a>
-      <a class="nav-link" routerLink="/reports" routerLinkActive="active">Reports</a>
-      <a class="nav-link" routerLink="/settings" routerLinkActive="active">Settings</a>
-    
-
+      <a class="nav-link" routerLink="/home" routerLinkActive="active">🏠 Dashboard</a>
+      <a class="nav-link" routerLink="/expenses" routerLinkActive="active">💸 Expenses</a>
+      <a class="nav-link" routerLink="/categories" routerLinkActive="active">📂 Categories</a>
+      <a class="nav-link" routerLink="/reports" routerLinkActive="active">📊 Reports</a>
+      <a class="nav-link" routerLink="/settings" routerLinkActive="active">⚙️ Settings</a>
     </nav>
-    <div class="version">Version 2.1.0<br>&copy; 2025 ExpenseHub</div>
+    <div class="version">
+      <p>Version 2.1.0</p>
+      <p>&copy; 2025 ExpenseHub</p>
+    </div>
   </aside>
 
   <!-- Main Content Area -->
   <div class="main-content">
     <!-- Top Navbar -->
     <header class="top-navbar">
-      <input type="text" class="search-input" placeholder="Search expenses, employees, or requests..." />
+      <input type="text" class="search-input" placeholder="🔍 Search expenses, employees, or requests..." />
       <div class="user-actions">
-        <div class="notification-bell">🔔<span class="badge">3</span></div>
+        <div class="notification-bell">
+          🔔
+          <span class="badge">3</span>
+        </div>
         <div class="user-profile">
           <span class="role">Admin User</span>
           <span class="dropdown">▼</span>
@@ -28,7 +32,7 @@
       </div>
     </header>
 
-    <!-- Router outlet goes here: content changes inside this section -->
+    <!-- Router outlet -->
     <main class="dashboard-placeholder">
       <router-outlet></router-outlet>
     </main>

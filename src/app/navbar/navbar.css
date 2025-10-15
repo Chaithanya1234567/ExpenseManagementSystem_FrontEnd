@@ -1,66 +1,69 @@
-/* Reset and Base Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Segoe UI", sans-serif;
-  background-color: #f4f7fa;
-  color: #333;
-}
-
-/* Layout */
+/* General Layout */
 .layout {
   display: flex;
   height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f6f8fb;
+  color: #333;
 }
 
 /* Sidebar */
 .sidebar {
-  width: 220px;
-  background-color: #162d4c;
+  width: 240px;
+  background: linear-gradient(180deg, #4b6cb7 0%, #182848 100%);
   color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  justify-content: space-between;
-  position: fixed;
-    height: 100vh;
+  padding: 1rem 1rem 0.8rem 1rem;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+
+  /* 👇 Key change */
+  justify-content: flex-start; 
 }
 
 .logo {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 40px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.8rem; /* tighter spacing */
+  letter-spacing: 0.5px;
 }
 
 .nav-menu {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0.3rem; /* reduced further for compact look */
 }
 
 .nav-link {
-  color: #ccc;
+  color: #dce3f2;
   text-decoration: none;
-  font-size: 16px;
-  padding: 10px 15px;
-  border-radius: 5px;
-  transition: background 0.2s ease;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
 }
 
-.nav-link:hover,
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(4px);
+}
+
 .nav-link.active {
-  background-color: #1e3a5f;
+  background-color: #ffffff33;
   color: #fff;
+  font-weight: 600;
 }
 
 .version {
-  font-size: 12px;
-  color: #bbb;
-  margin-top: auto;
+  font-size: 0.8rem;
+  text-align: center;
+  color: #c3cbe3;
+  line-height: 1.4;
+  margin-top: auto; 
 }
 
 /* Main Content */
@@ -72,65 +75,91 @@ body {
 
 /* Top Navbar */
 .top-navbar {
-  background-color: #ffffff;
-  padding: 15px 25px;
+  height: 60px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #e0e0e0;
-  position:fixed;
-  width: calc(100% - 226px);
-    left:226px;
+  padding: 0 1.5rem;
 }
 
 .search-input {
-  width: 50%;
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+  flex: 1;
+  max-width: 500px;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #4b6cb7;
+  box-shadow: 0 0 6px rgba(75, 108, 183, 0.3);
 }
 
 .user-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.5rem;
 }
 
 .notification-bell {
   position: relative;
-  font-size: 20px;
+  font-size: 1.3rem;
   cursor: pointer;
 }
 
-.badge {
+.notification-bell .badge {
   position: absolute;
   top: -5px;
-  right: -10px;
-  background: red;
-  color: white;
+  right: -8px;
+  background-color: #ff4d4f;
+  color: #fff;
+  font-size: 0.7rem;
   border-radius: 50%;
-  padding: 3px 6px;
-  font-size: 10px;
+  padding: 2px 6px;
 }
 
 .user-profile {
-  background-color: #f2f4f7;
-  padding: 8px 12px;
-  border-radius: 20px;
+  background-color: #f0f2f5;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 14px;
+  gap: 0.5rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
-/* Dashboard Placeholder */
-.dashboard-placeholder {
-  padding: 30px;
+.user-profile:hover {
+  background-color: #e6e9f0;
 }
+
+/* Content Placeholder */
 .dashboard-placeholder {
-  padding: 30px;
-  margin-left: 240px; /* push content to the right */
-  margin-top: 80px;   /* avoid overlapping with top navbar */
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    align-items: center;
+  }
+  .nav-link {
+    justify-content: center;
+    font-size: 0;
+  }
+  .nav-link::before {
+    font-size: 1.2rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+  }
 }

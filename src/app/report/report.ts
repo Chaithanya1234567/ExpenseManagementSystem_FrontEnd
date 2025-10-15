@@ -26,14 +26,19 @@ export class ReportComponent implements OnInit {
   }
 
   loadExpenses(): void {
-    this.expenseService.getAllExpenses().subscribe({
-      next: (data: Expense[]) => {
-        this.expenses = data;
-        this.filteredExpenses = data;
-      },
-      error: (err) => console.error('Error fetching expenses', err)
-    });
-  }
+  this.expenseService.getAllExpenses().subscribe({
+    next: (data: Expense[]) => {
+      // Map employee and expense type names
+      this.expenses = data.map(exp => ({
+        ...exp,
+        employeeName: exp.employeeName || 'N/A',
+        expenseTypeName: exp.expenseTypeName || 'N/A'
+      }));
+      this.filteredExpenses = this.expenses;
+    },
+    error: (err) => console.error('Error fetching expenses', err)
+  });
+}
 
   filterExpenses(): void {
     this.filteredExpenses = this.expenses.filter(exp => {
