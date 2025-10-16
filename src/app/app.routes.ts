@@ -4,6 +4,7 @@ import { Home } from './home/home';
 import { ExpenseComponent } from './expense/expense';
 import { Navbar } from './navbar/navbar';
 import { ReportComponent } from './report/report';  
+import { Approvals } from './approvals/approvals';
 
 export const routes: Routes = [
     {path:'', component: Navbar,
@@ -13,6 +14,7 @@ export const routes: Routes = [
     {path:'expenses', component: ExpenseComponent},
     {path:'reports', component: ReportComponent},
     {path:'home', component: Home},
+    {path: 'approvals', component: Approvals}
      ]
   },
   { path: '**', redirectTo: '' } // fallback

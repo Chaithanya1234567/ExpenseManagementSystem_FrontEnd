@@ -1,0 +1,25 @@
+<div *ngIf="loading">Loading approvals...</div>
+
+<table *ngIf="!loading" border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Expense ID</th>
+      <th>Approver ID</th>
+      <th>Status</th>
+      <th>Action Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let approval of approvals">
+      <td>{{ approval.expenseId }}</td>
+      <td>{{ approval.approverId }}</td>
+      <td>{{ approval.approvalStatus || 'Pending' }}</td>
+      <td>{{ approval.actionDate | date:'short' }}</td>
+      <!-- <td>
+        <button (click)="approve(approval.expenseId, approval.approverId)" [disabled]="approval.approvalStatus">Approve</button>
+        <button (click)="reject(approval.expenseId, approval.approverId)" [disabled]="approval.approvalStatus">Reject</button>
+      </td> -->
+    </tr>
+  </tbody>
+</table>

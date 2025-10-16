@@ -7,7 +7,7 @@ import { Expense } from './expense.model';
   providedIn: 'root'
 })
 export class ExpenseService {
-  private apiUrl = 'https://localhost:7000/api/Expense'; 
+  private apiUrl = 'http://localhost:5244/api/Expense'; 
 
   constructor(private http: HttpClient) { }
 
