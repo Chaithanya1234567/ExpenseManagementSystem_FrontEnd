@@ -34,4 +34,8 @@ export class ExpenseService {
   getRecentExpenses(count: number = 5): Observable<Expense[]> {
     return this.http.get<Expense[]>(`${this.apiUrl}/recent?count=${count}`);
   }
+  updateExpenseWithFormData(formData: FormData): Observable<boolean> {
+    return this.http.put<boolean>(this.apiUrl, formData);
+  }
+  
 }

@@ -2,21 +2,71 @@
   <h2>Expense Management</h2>
 
   <!-- Add Expense Form -->
-  <div class="expense-form card">
-    <h3>Add New Expense</h3>
-    <form (ngSubmit)="addExpense()" enctype="multipart/form-data">
-      <div class="form-group">
-        <input type="number" placeholder="Employee Id" [(ngModel)]="newExpense.employeeId" name="employeeId" required>
-        <input type="number" placeholder="Expense Type Id" [(ngModel)]="newExpense.expensetypeId" name="expensetypeId" required>
-      </div>
-      <div class="form-group">
-        <input type="number" placeholder="Amount" [(ngModel)]="newExpense.amount" name="amount" required>
-        <input type="file" (change)="onFileChange($event)">
-      </div>
-      <textarea placeholder="Description" [(ngModel)]="newExpense.description" name="description" required></textarea>
-      <button type="submit" class="btn-primary">Add Expense</button>
-    </form>
-  </div>
+ <div class="expense-form card">
+
+  <!-- Dynamic heading based on mode -->
+  <h3>{{ editMode ? 'Update Expense' : 'Add New Expense' }}</h3>
+
+  <!-- Form submit now points to submitExpense() which handles both add and update -->
+  <form (ngSubmit)="submitExpense()" enctype="multipart/form-data">
+    
+    <!-- Employee ID and Expense Type ID inputs -->
+    <div class="form-group">
+      <input
+        type="number"
+        placeholder="Employee Id"
+        [(ngModel)]="newExpense.employeeId"
+        name="employeeId"
+        required
+      >
+      <input
+        type="number"
+        placeholder="Expense Type Id"
+        [(ngModel)]="newExpense.expensetypeId"
+        name="expensetypeId"
+        required
+      >
+    </div>
+
+    <!-- Amount and Receipt File Upload -->
+    <div class="form-group">
+      <input
+        type="number"
+        placeholder="Amount"
+        [(ngModel)]="newExpense.amount"
+        name="amount"
+        required
+      >
+      <input
+        type="file"
+        (change)="onFileChange($event)"
+      >
+    </div>
+
+    <!-- Description textarea -->
+    <textarea
+      placeholder="Description"
+      [(ngModel)]="newExpense.description"
+      name="description"
+      required
+    ></textarea>
+
+    <!-- Submit button changes text based on editMode -->
+    <button type="submit" class="btn-primary">
+      {{ editMode ? 'Update Expense' : 'Add Expense' }}
+    </button>
+
+    <!-- Cancel button shown only in edit mode to reset form -->
+    <button
+      type="button"
+      *ngIf="editMode"
+      class="btn-secondary"
+      (click)="resetForm()"
+    >
+      Cancel
+    </button>
+  </form>
+</div>
 
   <hr>
 
@@ -51,7 +101,8 @@
               <span class="status" [ngClass]="expense.status.toLowerCase()">{{expense.status}}</span>
             </td>
             <td>
-              <button class="btn-delete" (click)="deleteExpense(expense.expenseId)">Delete</button>
+              <button class="btn-delete" (click)="deleteExpense(expense.expenseId)">Delete</button>&nbsp;
+              <button class="btn-update" (click)="editExpense(expense)">Edit</button>
             </td>
           </tr>
         </tbody>

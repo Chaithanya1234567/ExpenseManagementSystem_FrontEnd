@@ -108,9 +108,23 @@ input[type="file"]:hover {
   font-weight: 600;
   transition: all 0.2s ease;
 }
+.btn-update {
+  background: #1cc88a;
+  color: white;
+  border: none;
+  padding: 6px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
 
 .btn-delete:hover { 
   background: #c0392b;
+  transform: translateY(-1px);
+}
+.btn-update:hover { 
+  background: #17a673;
   transform: translateY(-1px);
 }
 

@@ -44,13 +44,19 @@
 
   <div class="requests-container">
     <div class="request-card" *ngFor="let req of recentRequests">
-      <h3>{{ req.employeeName }}</h3>
-      <p>Expense Type: {{ req.expenseTypeName }} • {{ req.date | date:'yyyy-MM-dd' }}</p>
-      <p>{{ req.amount | currency:'USD' }}</p>
-      <span class="status">{{ req.status }}</span>
+      <div class="request-header">
+        <h3>{{ req.employeeName }}</h3>
+        <span class="status" [ngClass]="req.status.toLowerCase()">{{ req.status }}</span>
+      </div>
+      <p class="expense-info">
+        <strong>Type:</strong> {{ req.expenseTypeName }} 
+        • <strong>Date:</strong> {{ req.date | date:'yyyy-MM-dd' }}
+      </p>
+      <p class="amount">{{ req.amount | currency:'USD' }}</p>
     </div>
   </div>
 </section>
+
 
 
 
@@ -108,7 +114,7 @@
         <thead>
           <tr>
             <th>Action</th>
-            <th>User</th>
+            <th>Employee_Id</th>
             <th>Amount</th>
             <th>Date &amp; Time</th>
             <th>Status</th>
