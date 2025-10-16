@@ -11,8 +11,7 @@ export interface Approval {
   providedIn: 'root'
 })
 export class ApprovalsService {
-  private baseUrl = 'http://localhost:5244/api/approval'; // Replace with your API URL
-
+  private baseUrl = 'https://localhost:7000/api/approval'; 
   constructor(private http: HttpClient) {}
 
   getAllApprovals(): Observable<Approval[]> {

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
-  private baseUrl = 'http://localhost:5244/api/Expensetype'; 
+  private baseUrl = 'https://localhost:7000/api/Expensetype'; 
 
   constructor(private http: HttpClient) {}
 
