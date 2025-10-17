@@ -1,0 +1,78 @@
+<div class="department-container">
+  <!-- HEADER -->
+  <header class="department-header">
+    <h2>Department Management</h2>
+    <button class="add-btn" (click)="openModal()">+ Add Department</button>
+  </header>
+
+  <!-- LOADING -->
+  <div *ngIf="loading()" class="loading">
+    <div class="spinner"></div>
+    <p>Loading departments...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div *ngIf="error()" class="error-banner">
+    <span>{{ error() }}</span>
+  </div>
+
+  <!-- DEPARTMENT TABLE -->
+  <div class="department-table-wrapper" *ngIf="!loading() && departments().length">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of departments()">
+          <td>{{ d.departmentId }}</td>
+          <td>{{ d.departmentName }}</td>
+          <td>{{ d.description }}</td>
+          <td class="actions text-center">
+            <button class="edit-btn" (click)="openModal(d)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="delete-btn" (click)="delete(d)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal" *ngIf="showModal()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ current ? 'Edit Department' : 'Add Department' }}</h3>
+        <button class="close-btn" (click)="closeModal()">✖</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Name</label>
+            <input [(ngModel)]="departmentName" placeholder="Enter department name" />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input [(ngModel)]="description" placeholder="Enter description" />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="save-btn" (click)="save()">💾 Save</button>
+        <button class="cancel-btn" (click)="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay" *ngIf="showModal()" (click)="closeModal()"></div>
+</div>

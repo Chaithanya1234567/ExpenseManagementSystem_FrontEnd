@@ -1,0 +1,149 @@
+<div class="employee-container">
+    <!-- HEADER -->
+    <header class="employee-header">
+        <h2>Employee Management</h2>
+        <button class="add-btn" (click)="openModal()">+ Add Employee</button>
+    </header>
+
+    <!-- LOADING -->
+    <div *ngIf="loading()" class="loading">
+        <div class="spinner"></div>
+        <p>Loading employees...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="error()" class="error-banner">
+        <span>{{ error() }}</span>
+    </div>
+
+    <!-- EMPLOYEE TABLE -->
+    <div class="employee-table-wrapper" *ngIf="!loading() && employees().length">
+        <table class="employee-table styled-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Dept ID</th>
+                    <th>Role ID</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let e of employees()">
+                    <td>{{ e.employeeId }}</td>
+                    <td>{{ e.firstName }} {{ e.lastName }}</td>
+                    <td>{{ e.email }}</td>
+                    <td>{{ e.phoneNumber }}</td>
+                    <td>{{ e.gender }}</td>
+                    <td>
+                        <span class="badge"
+                            [ngClass]="'type-' + (e.employeeType ? e.employeeType.toString().toLowerCase() : 'unknown')">
+                            {{ e.employeeType || 'N/A' }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge" [ngClass]="'status-' + (e.status ? e.status.toLowerCase() : 'unknown')">
+                            {{ e.status || 'N/A' }}
+                        </span>
+                    </td>
+                    <td>{{ e.departmentId }}</td>
+                    <td>{{ e.roleId }}</td>
+                    <td class="actions text-center">
+                        <button class="edit-btn" (click)="openModal(e)">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="delete-btn" (click)="delete(e)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" *ngIf="showModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ current ? 'Edit Employee' : 'Add Employee' }}</h3>
+                <button class="close-btn" (click)="closeModal()">✖</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input [(ngModel)]="form().firstName" placeholder="Enter first name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input [(ngModel)]="form().lastName" placeholder="Enter last name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input [(ngModel)]="form().email" type="email" placeholder="Enter email" />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input [(ngModel)]="form().phoneNumber" placeholder="Enter phone number" />
+                    </div>
+                    <div class="form-group">
+                        <label>DOB</label>
+                        <input type="date" [(ngModel)]="form().dob" />
+                    </div>
+                    <div class="form-group">
+                        <label>DOJ</label>
+                        <input type="date" [(ngModel)]="form().doj" />
+                    </div>
+                    <div class="form-group">
+                        <label>Salary</label>
+                        <input type="number" [(ngModel)]="form().salary" />
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input [(ngModel)]="form().address" placeholder="Enter address" />
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select [(ngModel)]="form().gender">
+                            <option *ngFor="let g of genders" [value]="g">{{ g }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Employee Type</label>
+                        <select [(ngModel)]="form().employeeType">
+                            <option *ngFor="let t of employeeTypes" [value]="t">{{ t }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select [(ngModel)]="form().status">
+                            <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Department ID</label>
+                        <input type="number" [(ngModel)]="form().departmentId" />
+                    </div>
+                    <div class="form-group">
+                        <label>Role ID</label>
+                        <input type="number" [(ngModel)]="form().roleId" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="save-btn" (click)="save()">💾 Save</button>
+                <button class="cancel-btn" (click)="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY -->
+    <div class="overlay" *ngIf="showModal()" (click)="closeModal()"></div>
+</div>
