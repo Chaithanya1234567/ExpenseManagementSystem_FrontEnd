@@ -5,6 +5,8 @@ import { ExpenseComponent } from './expense/expense';
 import { Navbar } from './navbar/navbar';
 import { ReportComponent } from './report/report';  
 import { Approvals } from './approvals/approvals';
+import { EmployeeComponent } from './employee/employee';
+import { DepartmentComponent } from './department/department';
 
 export const routes: Routes = [
     {path:'', component: Navbar,
@@ -13,6 +15,8 @@ export const routes: Routes = [
     {path:'categories', component: Categories},
     {path:'expenses', component: ExpenseComponent},
     {path:'reports', component: ReportComponent},
+    {path:'employees', component: EmployeeComponent},
+    { path:'departments', component: DepartmentComponent},
     {path:'home', component: Home},
     {path: 'approvals', component: Approvals}
      ]

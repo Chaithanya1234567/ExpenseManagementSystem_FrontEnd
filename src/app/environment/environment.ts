@@ -1,11 +1,5 @@
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-environment',
-  imports: [],
-  templateUrl: './environment.html',
-  styleUrl: './environment.css'
-})
-export class Environment {
-
-}
+export const environment = {
+  production: false,
+  apiUrl: 'https://localhost:7000/api'
+};
+ 

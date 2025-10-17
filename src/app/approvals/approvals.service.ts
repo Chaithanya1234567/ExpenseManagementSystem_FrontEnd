@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environment/environment';
 export interface Approval {
   expenseId: number;
   approverId: number;
@@ -11,7 +12,7 @@ export interface Approval {
   providedIn: 'root'
 })
 export class ApprovalsService {
-  private baseUrl = 'https://localhost:7000/api/approval'; 
+  private baseUrl = `${environment.apiUrl}/approval`; 
   constructor(private http: HttpClient) {}
 
   getAllApprovals(): Observable<Approval[]> {
