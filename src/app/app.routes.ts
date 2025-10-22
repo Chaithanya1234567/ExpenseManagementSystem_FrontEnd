@@ -4,9 +4,10 @@ import { Home } from './home/home';
 import { ExpenseComponent } from './expense/expense';
 import { Navbar } from './navbar/navbar';
 import { ReportComponent } from './report/report';  
-import { Approvals } from './approvals/approvals';
+import { ApprovalsComponent } from './approvals/approvals';
 import { EmployeeComponent } from './employee/employee';
 import { DepartmentComponent } from './department/department';
+import { App } from './app';
 
 export const routes: Routes = [
     {path:'', component: Navbar,
@@ -16,9 +17,10 @@ export const routes: Routes = [
     {path:'expenses', component: ExpenseComponent},
     {path:'reports', component: ReportComponent},
     {path:'employees', component: EmployeeComponent},
-    { path:'departments', component: DepartmentComponent},
-    {path:'home', component: Home},
-    {path: 'approvals', component: Approvals}
+    {path:'departments', component: DepartmentComponent},
+    {path: 'approvals', component: ApprovalsComponent},
+
+    {path:'home', component: Home}
      ]
   },
   { path: '**', redirectTo: '' } // fallback

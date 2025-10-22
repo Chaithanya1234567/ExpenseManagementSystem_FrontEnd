@@ -30,5 +30,7 @@ export class HomeService {
     getRecentExpenses(count: number = 5): Observable<Expense[]> {
     return this.http.get<Expense[]>(`${this.apiUrl}/recent?count=${count}`);
   }
+
+  
   }
 

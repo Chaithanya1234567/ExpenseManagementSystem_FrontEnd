@@ -72,8 +72,8 @@
       ${{ request.amount }}
     </div>
         <div class="approval-buttons">  
-          <button class="approve" (click)="approveRequest(request)">Approve</button>
-          <button class="reject" (click)="rejectRequest(request)">Reject</button>
+          <button class="approve"  (click)="onApprove(req)">Approve</button>
+          <button class="reject"  (click)="onReject(req)">Reject</button>
         </div>
       </div>
     </section>

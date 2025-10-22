@@ -11,4 +11,5 @@ export interface Expense {
   status: 'Pending' | 'Approved' | 'Rejected';
   approvalStatus: 'Pending' | 'Approved' | 'Rejected';
   createdDate: string;
+  approverId?: number;
 }

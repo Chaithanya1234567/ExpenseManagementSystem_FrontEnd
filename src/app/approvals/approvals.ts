@@ -1,44 +1,171 @@
-import { Component } from '@angular/core';
-import { Approval } from './approvals.service'; 
-import { ApprovalsService } from './approvals.service';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { ApprovalService,Employee } from './approvals.service';
+import { PendingRequest } from '../pendingrequest.model';
+import { Approval } from './approval.model';
+import { finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+
 
 @Component({
   selector: 'app-approvals',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, DatePipe, DecimalPipe],
   templateUrl: './approvals.html',
-  styleUrl: './approvals.css'
+  styleUrls: ['./approvals.css']
 })
-export class Approvals {
- approvals: Approval[] = [];
+export class ApprovalsComponent implements OnInit {
+  pendingRequests: PendingRequest[] = [];
+  approvedRequests: PendingRequest[] = [];
+
   loading = false;
+  processingMap = new Map<number, boolean>();
 
-  constructor(private approvalService: ApprovalsService) {}
+  constructor(private approvalService: ApprovalService) {}
 
-  ngOnInit() {
-    this.fetchApprovals();
+  private getApproverId(): number {
+    // Hardcoded manager ID (you can adjust this to get dynamically, if needed)
+    return 1;
   }
 
-  fetchApprovals() {
+  ngOnInit(): void {
+    this.loadPendingRequests();
+    this.loadApprovedRequests();
+  }
+
+  loadPendingRequests(): void {
     this.loading = true;
-    this.approvalService.getAllApprovals().subscribe({
-      next: (res) => {
-        this.approvals = res;
-        this.loading = false;
+    this.approvalService.getPendingRequests()
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (list) => this.pendingRequests = list || [],
+        error: (err) => {
+          console.error('Failed to load pending requests:', err);
+          alert('Unable to load pending requests. Try again later.');
+        }
+      });
+  }
+
+  loadApprovedRequests(): void {
+    this.approvalService.getApprovedRequests()
+      .subscribe({
+        next: (list) => this.approvedRequests = list || [],
+        error: (err) => console.error('Failed to load approved requests:', err)
+      });
+  }
+
+  canApprove(req: PendingRequest): boolean {
+    return req.status === 'Pending' && !this.processingMap.get(req.expenseId);
+  }
+
+  canReject(req: PendingRequest): boolean {
+    return req.status === 'Pending' && !this.processingMap.get(req.expenseId);
+  }
+
+  // Method to fetch approver's full name based on ID
+  private getApproverName(approverId: number): Observable<string> {
+  return this.approvalService.getEmployeeNameById(approverId).pipe(
+    map((employee: Employee) => `${employee.firstName} ${employee.lastName}`)  // Now mapping Employee to string
+  );
+}
+
+
+  onApprove(req: PendingRequest): void {
+    if (!this.canApprove(req)) return;
+
+    const approverId = this.getApproverId();
+    
+    // Fetch approver's name before submitting the approval
+    this.getApproverName(approverId).subscribe({
+      next: (approverName) => {
+        const payload: Approval = {
+          expenseId: req.expenseId,
+          approverId,
+          approverName,  // Use the fetched approver name
+          approvalStatus: 'Approved',
+          actionDate: new Date().toISOString(),
+          employeeId: req.employeeId
+        };
+
+        this.processingMap.set(req.expenseId, true);
+
+        const previousStatus = req.status;
+        req.status = 'Approved';
+
+        this.approvalService.approve(payload)
+          .pipe(finalize(() => this.processingMap.delete(req.expenseId)))
+          .subscribe({
+            next: () => {
+              // Move approved request to approvedRequests array
+              this.approvedRequests.unshift({ ...req });
+              this.pendingRequests = this.pendingRequests.filter(r => r.expenseId !== req.expenseId);
+            },
+            error: (err) => {
+              req.status = previousStatus;
+              alert('Failed to approve expense. Try again.');
+            }
+          });
       },
-      error: () => this.loading = false
+      error: (err) => {
+        console.error('Failed to fetch approver name:', err);
+        alert('Unable to fetch approver name. Please try again.');
+      }
     });
   }
 
-  approve(expenseId: number, approverId: number) {
-    this.approvalService.approveExpense({ expenseId, approverId }).subscribe({
-      next: () => this.fetchApprovals()
+  onReject(req: PendingRequest): void {
+    if (!this.canReject(req)) return;
+
+    const reason = prompt(`Reject expense #${req.expenseId}. Optional comment:`, '');
+    const confirmed = confirm(`Are you sure you want to reject expense #${req.expenseId}?`);
+    if (!confirmed) return;
+
+    const approverId = this.getApproverId();
+    
+    // Fetch approver's name before submitting the rejection
+    this.getApproverName(approverId).subscribe({
+      next: (approverName) => {
+        this.processingMap.set(req.expenseId, true);
+        const prevStatus = req.status;
+        req.status = 'Rejected';
+
+        const payload: Approval = {
+          expenseId: req.expenseId,
+          approverId,
+          approverName,  // Use the fetched approver name
+          approvalStatus: 'Rejected',
+          comments: reason || null,
+          actionDate: new Date().toISOString(),
+          employeeId: req.employeeId
+        };
+
+        this.approvalService.reject(payload)
+          .pipe(finalize(() => this.processingMap.delete(req.expenseId)))
+          .subscribe({
+            next: () => {
+              // success already shown
+            },
+            error: (err) => {
+              console.error('Rejection failed:', err);
+              req.status = prevStatus;
+              alert('Failed to reject. Please try again.');
+            }
+          });
+      },
+      error: (err) => {
+        console.error('Failed to fetch approver name:', err);
+        alert('Unable to fetch approver name. Please try again.');
+      }
     });
   }
 
-  reject(expenseId: number, approverId: number) {
-    this.approvalService.rejectExpense({ expenseId, approverId }).subscribe({
-      next: () => this.fetchApprovals()
-    });
+  viewReceipt(url?: string | null): void {
+    if (!url) {
+      alert('No receipt available.');
+      return;
+    }
+    window.open(url, '_blank');
   }
 }

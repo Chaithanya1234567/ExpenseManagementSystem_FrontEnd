@@ -5,7 +5,7 @@ import { Expense } from '../expense/expense.model';
 import { HomeService } from './home.service';
 import { AuditLogService } from '../auditlog/auditlog.service';
 import { AuditLog } from '../auditlog/auditlog.model';
-import { ApprovalService } from '../approval.service';
+import { ApprovalService } from '../approvals/approvals.service';
 import { signal } from '@angular/core';
 import { DashboardStats } from './dashboard.service';
 import { DashboardService } from './dashboard.service';
@@ -94,18 +94,20 @@ export class Home implements OnInit {
   }
   approveRequest(request: PendingRequest) {
     const approverName = 'Manager';
-    this.approvalService.approve(request.expenseId, request.approverId).subscribe({
+    const payload = { expenseId: request.expenseId, approverId: request.approverId } as any;
+    this.approvalService.approve(payload).subscribe({
       next: () => this.refreshDashboard(),
       
-      error: (err) => console.error('Error approving expense', err)
+      error: (err: any) => console.error('Error approving expense', err)
     });
   }
 
   rejectRequest(request: PendingRequest) {
     const approverName = 'Manager';
-    this.approvalService.reject(request.expenseId, request.approverId).subscribe({
+    const payload = { expenseId: request.expenseId, approverId: request.approverId } as any;
+    this.approvalService.reject(payload).subscribe({
       next: () => this.refreshDashboard(),
-      error: (err) => console.error('Error rejecting expense', err)
+      error: (err : any) => console.error('Error rejecting expense', err)
     });
   }
 

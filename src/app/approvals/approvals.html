@@ -1,25 +1,97 @@
-<div *ngIf="loading">Loading approvals...</div>
+<!-- Pending Approvals Table (existing) -->
+<div class="approvals">
+  <h2>Pending Approvals</h2>
 
-<table *ngIf="!loading" border="1" cellpadding="5" cellspacing="0">
-  <thead>
-    <tr>
-      <th>Expense ID</th>
-      <th>Approver ID</th>
-      <th>Status</th>
-      <th>Action Date</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let approval of approvals">
-      <td>{{ approval.expenseId }}</td>
-      <td>{{ approval.approverId }}</td>
-      <td>{{ approval.approvalStatus || 'Pending' }}</td>
-      <td>{{ approval.actionDate | date:'short' }}</td>
-      <!-- <td>
-        <button (click)="approve(approval.expenseId, approval.approverId)" [disabled]="approval.approvalStatus">Approve</button>
-        <button (click)="reject(approval.expenseId, approval.approverId)" [disabled]="approval.approvalStatus">Reject</button>
-      </td> -->
-    </tr>
-  </tbody>
-</table>
+  <div *ngIf="loading" class="loading">Loading...</div>
+  <div *ngIf="!loading && pendingRequests.length === 0" class="empty">
+    No pending requests.
+  </div>
+
+  <table *ngIf="pendingRequests.length > 0" class="approvals-table">
+    <thead>
+      <tr>
+        <th>Expense #</th>
+        <th>Employee</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <!-- <th>Submitted</th> -->
+        <th>Status</th>
+        <th>Receipt</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let req of pendingRequests">
+        <td>{{ req.expenseId }}</td>
+        <td>{{ req.employeeName }}</td>
+        <td>{{ req.expenseTypeName || '-' }}</td>
+        <td>₹{{ req.amount | number:'1.2-2' }}</td>
+        
+        <!-- <td>{{ req.expenseDate | date:'short' }}</td> -->
+        <td>
+          <span class="status" [ngClass]="{
+            'pending': req.status === 'Pending',
+            'approved': req.status === 'Approved',
+            'rejected': req.status === 'Rejected'
+          }">
+            {{ req.status }}
+          </span>
+        </td>
+        <td>
+          <button *ngIf="req.receiptUrl" (click)="viewReceipt(req.receiptUrl)">View</button>
+          <span *ngIf="!req.receiptUrl">-</span>
+        </td>
+        <td class="actions">
+          <button
+            (click)="onApprove(req)"
+            [disabled]="!canApprove(req)"
+            title="Approve"
+            class="btn-approve">
+            ✅ Approve
+          </button>
+          <button
+            (click)="onReject(req)"
+            [disabled]="!canReject(req)"
+            title="Reject"
+            class="btn-reject">
+            ❌ Reject
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="refresh">
+    <button (click)="loadPendingRequests()">Refresh</button>
+  </div>
+</div>
+
+<!-- Approved Approvals Section -->
+<div class="approvals approved-section" *ngIf="approvedRequests.length > 0">
+  <h2>Recently Approved</h2>
+  <table class="approvals-table">
+    <thead>
+      <tr>
+        <th>Expense #</th>
+        <th>Employee</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Approved On</th>
+        <th>Receipt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let req of approvedRequests">
+        <td>{{ req.expenseId }}</td>
+        <td>{{ req.employeeName }}</td>
+        <td>{{ req.expenseTypeName || '-' }}</td>
+        <td>₹{{ req.amount | number:'1.2-2' }}</td>
+        <!-- <td>{{ req.actionDate | date:'short' }}</td> -->
+        <td>
+          <button *ngIf="req.receiptUrl" (click)="viewReceipt(req.receiptUrl)">View</button>
+          <span *ngIf="!req.receiptUrl">-</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
