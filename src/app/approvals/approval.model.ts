@@ -7,4 +7,5 @@ export interface Approval {
   comments?: string | null;
   actionDate: string; 
   employeeId: number;
+  ExpenseTypeName?: string;
 }

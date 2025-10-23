@@ -46,7 +46,7 @@
   </div>
 
   <!-- MODAL -->
-  <div class="modal" *ngIf="showModal()">
+  <div class="modal" *ngIf="showModalSignal()">
     <div class="modal-content">
       <div class="modal-header">
         <h3>{{ current ? 'Edit Department' : 'Add Department' }}</h3>
@@ -74,5 +74,5 @@
   </div>
 
   <!-- OVERLAY -->
-  <div class="overlay" *ngIf="showModal()" (click)="closeModal()"></div>
+  <div class="overlay" *ngIf="showModalSignal()" (click)="closeModal()"></div>
 </div>

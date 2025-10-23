@@ -7,5 +7,6 @@ export interface PendingRequest {
   expenseDate: string; // ISO string
   status: 'Pending' | 'Approved' | 'Rejected' | string;
   receiptUrl?: string | null;
+  expensetypename?: string;
   
 }

@@ -1,32 +1,37 @@
 <div class="categories-container">
-  <h2>Categories</h2>
+  <!-- HEADER -->
+  <header class="page-header">
+    <h2>Expense Categories</h2>
+    <button class="add-btn" (click)="startAdd()">
+      <i class="fa fa-plus"></i> Add Category
+    </button>
+  </header>
 
+  <!-- LOADING & ERROR -->
   <div *ngIf="loading()" class="loading">
     <div class="spinner"></div>
     <p>Loading categories...</p>
   </div>
 
   <div *ngIf="error()" class="error-banner">
-    <span>{{ error() }}</span>
+    <i class="fa fa-exclamation-triangle"></i> {{ error() }}
   </div>
 
+  <!-- MAIN CONTENT -->
   <div class="content-wrapper">
-    <!-- List Section -->
-    <div class="card list">
-      <div class="header-bar">
-        <h3>Categories List</h3>
-        <button class="add-btn" (click)="startAdd()">
-          <i class="fa fa-plus"></i> Add Category
-        </button>
+    <!-- LIST CARD -->
+    <div class="card list-card">
+      <div class="card-header">
+        <h3><i class="fa fa-list"></i> Categories List</h3>
       </div>
 
       <table class="styled-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Category Name</th>
             <th>Description</th>
-            <th style="text-align:center;">Actions</th>
+            <th class="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -34,12 +39,12 @@
             <td>{{ c.expenseTypeId }}</td>
             <td>{{ c.expenseTypeName }}</td>
             <td>{{ c.description }}</td>
-            <td class="actions">
-              <button class="edit-btn" (click)="startEdit(c)">
-                <i class="fa fa-edit"></i> Edit
+            <td class="actions text-center">
+              <button class="icon-btn edit" (click)="startEdit(c)">
+                <i class="fa fa-edit"></i>
               </button>
-              <button class="delete-btn" (click)="delete(c)">
-                <i class="fa fa-trash"></i> Delete
+              <button class="icon-btn delete" (click)="delete(c)">
+                <i class="fa fa-trash"></i>
               </button>
             </td>
           </tr>
@@ -47,31 +52,37 @@
       </table>
     </div>
 
-    <!-- Form Section -->
-    <div class="card form">
-      <h3>{{ current ? 'Edit' : 'Add' }} Category</h3>
+    <!-- FORM CARD -->
+    <div class="card form-card">
+      <!-- <h3>{{ current ? '✏️ Edit Category' : '➕ Add Category' }}</h3> -->
 
-      <div class="form-group">
-        <label>Name</label>
-        <input
-          name="name"
-          [(ngModel)]="name"
-          placeholder="Enter expense type name"
-        />
-      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Category Name</label>
+          <input
+            [(ngModel)]="name"
+            name="name"
+            placeholder="Enter expense type name"
+          />
+        </div>
 
-      <div class="form-group">
-        <label>Description</label>
-        <input
-          name="description"
-          [(ngModel)]="description"
-          placeholder="Enter description"
-        />
+        <div class="form-group">
+          <label>Description</label>
+          <input
+            [(ngModel)]="description"
+            name="description"
+            placeholder="Enter description"
+          />
+        </div>
       </div>
 
       <div class="form-actions">
-        <button class="save-btn" (click)="save()">💾 Save</button>
-        <button class="cancel-btn" (click)="cancel()">✖ Cancel</button>
+        <button class="save-btn" (click)="save()">
+          <i class="fa fa-save"></i> Save
+        </button>
+        <button class="cancel-btn" (click)="cancel()">
+          <i class="fa fa-times"></i> Cancel
+        </button>
       </div>
     </div>
   </div>

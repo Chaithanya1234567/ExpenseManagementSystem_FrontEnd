@@ -20,12 +20,13 @@ export class DepartmentService {
     return this.http.get<Department>(`${this.apiUrl}/${id}`);
   }
 
-  create(department: Department): Observable<Department> {
+  create(department: any): Observable<any> {
+      console.log('Creating department:', department); 
     return this.http.post<Department>(this.apiUrl, department);
   }
 
   update(department: Department): Observable<any> {
-    return this.http.put(`${this.apiUrl}?id=${department.departmentId}`, department);
+    return this.http.put(`${this.apiUrl}?id=${department.departmentId}`, department, { responseType: 'text' });
   }
 
   delete(id: number): Observable<any> {

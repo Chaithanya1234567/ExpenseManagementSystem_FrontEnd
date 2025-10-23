@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { PendingRequest } from '../pendingrequest.model';
 import { Approval } from './approval.model';
 import { environment } from '../environment/environment';
+import { Expense } from '../expense/expense.model';
 
 @Injectable({
   providedIn: 'root'

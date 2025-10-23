@@ -211,9 +211,9 @@ table.audit-log th, table.audit-log td {
 }
 
 table.audit-log th {
-  background: #f4f6fc;
+  background: #e0e7ff;
   font-weight: 600;
-  color: #555;
+  color: black;
 }
 
 table.audit-log tbody tr:hover {

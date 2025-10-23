@@ -60,20 +60,30 @@ export class DepartmentComponent implements OnInit {
   }
 
   save() {
-    const dept: Department = {
-      departmentId: this.current?.departmentId ?? 0,
+  const deptDto = {
+    departmentName: this.departmentName,
+    description: this.description
+  };
+
+  if (this.current) {
+    // update
+    const updatedDept = {
+      departmentId: this.current.departmentId,
       departmentName: this.departmentName,
       description: this.description
     };
-
-    if (this.current) {
-      this.departmentService.update(dept).subscribe(() => this.fetchDepartments());
-    } else {
-      this.departmentService.create(dept).subscribe(() => this.fetchDepartments());
-    }
-
-    this.closeModal();
+    this.departmentService.update(updatedDept).subscribe(() => this.fetchDepartments());
+  } else {
+    // create
+    this.departmentService.create(deptDto).subscribe({
+      next: () => this.fetchDepartments(),
+      error: err => console.error('Error creating department:', err)
+    });
   }
+
+  this.closeModal();
+}
+
 
   delete(dept: Department) {
     if (confirm(`Delete department ${dept.departmentName}?`)) {

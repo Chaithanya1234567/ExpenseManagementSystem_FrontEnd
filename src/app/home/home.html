@@ -9,7 +9,7 @@
     <section class="stats-grid section">
       <div class="stat-card">
         <h3>This Month Expenses</h3>
-        <div class="stat-value">{{ thisMonthExpenses | currency:'USD' }}</div>
+        <div class="stat-value">₹{{ thisMonthExpenses  }}</div>
         <div class="stat-subtext">+12.5% from last month</div>
       </div>
       <div class="stat-card">
@@ -20,7 +20,7 @@
       <div class="stat-card">
   <h3>Approved This Week</h3>
   <div class="stat-value">
-    ${{ stats()?.approvedThisWeekAmount || 0 | number:'1.0-0' }}
+    ₹{{ stats()?.approvedThisWeekAmount || 0 | number:'1.0-0' }}
   </div>
   <div class="stat-subtext">
     {{ stats()?.approvedThisWeekCount || 0 }} requests approved
@@ -30,10 +30,10 @@
 <div class="stat-card">
   <h3>Budget Remaining</h3>
   <div class="stat-value">
-    ${{ stats()?.remainingAmount || 0 | number:'1.0-0' }}
+    ₹{{ stats()?.remainingAmount || 0 | number:'1.0-0' }}
   </div>
   <div class="stat-subtext">
-    of ${{ stats()?.totalBudget || 0 | number:'1.0-0' }} total budget
+    of ₹{{ stats()?.totalBudget || 0 | number:'1.0-0' }} total budget
   </div>
 </div>
 </section>
@@ -52,13 +52,10 @@
         <strong>Type:</strong> {{ req.expenseTypeName }} 
         • <strong>Date:</strong> {{ req.date | date:'yyyy-MM-dd' }}
       </p>
-      <p class="amount">{{ req.amount | currency:'USD' }}</p>
+      <p class="amount">₹{{ req.amount }}</p>
     </div>
   </div>
 </section>
-
-
-
 
     <section class="quick-approvals section">
       <h2>Quick Approvals</h2>
@@ -69,11 +66,11 @@
       <strong>{{ request.employeeName }}</strong> |
       {{ request.expenseType }} |
       {{ request.date | date:'shortDate' }} |
-      ${{ request.amount }}
+      ₹{{ request.amount }}
     </div>
         <div class="approval-buttons">  
-          <button class="approve"  (click)="onApprove(req)">Approve</button>
-          <button class="reject"  (click)="onReject(req)">Reject</button>
+          <button class="approve"  (click)="approveRequest(request)">Approve</button>
+          <button class="reject"  (click)="rejectRequest(request)">Reject</button>
         </div>
       </div>
     </section>
@@ -124,7 +121,7 @@
           <tr *ngFor="let log of auditLogs">
             <td>{{ log.action }}</td> 
             <td>{{ log.actionById }}</td> 
-            <td>{{ log.amount ? ('$' + log.amount) : '-' }}</td>
+            <td>{{ log.amount ? ('₹' + log.amount) : '-' }}</td>
             <td>{{ log.actionDate | date:'yyyy-MM-dd HH:mm' }}</td> 
             <td [ngClass]="{
                   'status-approved': log.status === 'approved',

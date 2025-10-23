@@ -6,6 +6,8 @@ import { Approval } from './approval.model';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+ import { switchMap,  catchError, of } from 'rxjs';
+
 
 
 
@@ -72,48 +74,49 @@ export class ApprovalsComponent implements OnInit {
 }
 
 
-  onApprove(req: PendingRequest): void {
-    if (!this.canApprove(req)) return;
 
-    const approverId = this.getApproverId();
-    
-    // Fetch approver's name before submitting the approval
-    this.getApproverName(approverId).subscribe({
-      next: (approverName) => {
-        const payload: Approval = {
-          expenseId: req.expenseId,
-          approverId,
-          approverName,  // Use the fetched approver name
-          approvalStatus: 'Approved',
-          actionDate: new Date().toISOString(),
-          employeeId: req.employeeId
-        };
+onApprove(req: PendingRequest): void {
+  if (!this.canApprove(req)) return;
 
-        this.processingMap.set(req.expenseId, true);
+  const approverId = this.getApproverId();
 
-        const previousStatus = req.status;
-        req.status = 'Approved';
+  // Start processing
+  this.processingMap.set(req.expenseId, true);
 
-        this.approvalService.approve(payload)
-          .pipe(finalize(() => this.processingMap.delete(req.expenseId)))
-          .subscribe({
-            next: () => {
-              // Move approved request to approvedRequests array
-              this.approvedRequests.unshift({ ...req });
-              this.pendingRequests = this.pendingRequests.filter(r => r.expenseId !== req.expenseId);
-            },
-            error: (err) => {
-              req.status = previousStatus;
-              alert('Failed to approve expense. Try again.');
-            }
-          });
-      },
-      error: (err) => {
-        console.error('Failed to fetch approver name:', err);
-        alert('Unable to fetch approver name. Please try again.');
-      }
-    });
-  }
+  this.getApproverName(approverId).pipe(
+    switchMap(approverName => {
+      const payload: Approval = {
+        expenseId: req.expenseId,
+        approverId,
+        approverName,
+        approvalStatus: 'Approved',
+        actionDate: new Date().toISOString(),
+        employeeId: req.employeeId
+      };
+
+      // Optimistically update UI
+      const previousStatus = req.status;
+      req.status = 'Approved';
+
+      return this.approvalService.approve(payload).pipe(
+        catchError(err => {
+          // Revert UI on error
+          req.status = previousStatus;
+          console.error('Approve error:', err);
+          alert('Failed to approve expense. Try again.');
+          return of(null); // Continue the stream
+        })
+      );
+    }),
+    finalize(() => this.processingMap.delete(req.expenseId))
+  ).subscribe(res => {
+    if (res) {
+      // Move approved request to approvedRequests array
+      this.approvedRequests.unshift({ ...req });
+      this.pendingRequests = this.pendingRequests.filter(r => r.expenseId !== req.expenseId);
+    }
+  });
+}
 
   onReject(req: PendingRequest): void {
     if (!this.canReject(req)) return;
@@ -134,7 +137,7 @@ export class ApprovalsComponent implements OnInit {
         const payload: Approval = {
           expenseId: req.expenseId,
           approverId,
-          approverName,  // Use the fetched approver name
+          approverName,  
           approvalStatus: 'Rejected',
           comments: reason || null,
           actionDate: new Date().toISOString(),
@@ -145,7 +148,6 @@ export class ApprovalsComponent implements OnInit {
           .pipe(finalize(() => this.processingMap.delete(req.expenseId)))
           .subscribe({
             next: () => {
-              // success already shown
             },
             error: (err) => {
               console.error('Rejection failed:', err);
