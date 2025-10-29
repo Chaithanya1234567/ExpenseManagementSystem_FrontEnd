@@ -29,7 +29,7 @@ export class ApprovalsComponent implements OnInit {
 
   private getApproverId(): number {
     // Hardcoded manager ID (you can adjust this to get dynamically, if needed)
-    return 1;
+    return 22;
   }
 
   ngOnInit(): void {
@@ -40,7 +40,7 @@ export class ApprovalsComponent implements OnInit {
   loadPendingRequests(): void {
     this.loading = true;
     this.approvalService.getPendingRequests()
-      .pipe(finalize(() => (this.loading = false)))
+      .pipe(finalize(() => (this.loading = false))) 
       .subscribe({
         next: (list) => this.pendingRequests = list || [],
         error: (err) => {

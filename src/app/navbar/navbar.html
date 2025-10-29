@@ -1,7 +1,12 @@
-<div class="layout">
+<div class="layout" *ngIf="authService.isLoggedIn(); else loginView">
+  <!-- ✅ Moved *ngIf to the outermost layout container 
+       so the entire dashboard (sidebar + top bar) only shows after login -->
+
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="logo">💰 ExpenseHub</div>
+
+    <!-- ✅ Removed *ngIf from nav-menu (since applied on parent div) -->
     <nav class="nav-menu">
       <a class="nav-link" routerLink="/home" routerLinkActive="active">🏠 Dashboard</a>
       <a class="nav-link" routerLink="/expenses" routerLinkActive="active">💸 Expenses</a>
@@ -9,14 +14,19 @@
       <a class="nav-link" routerLink="/employees" routerLinkActive="active">👥 Employees</a>
       <a class="nav-link" routerLink="/departments" routerLinkActive="active">🏬 Departments</a>
       <a class="nav-link" routerLink="/approvals" routerLinkActive="active">📝 Approvals</a>
-      <a class="nav-link" routerLink="/settings/roles-permissions" routerLinkActive="active">🔐 Roles & Permissions</a>
+      <a class="nav-link" routerLink="/settings/roles-permissions" routerLinkActive="active">
+        🔐 Roles & Permissions
+      </a>
       <a class="nav-link" routerLink="/reports" routerLinkActive="active">📊 Reports</a>
-      <a class="nav-link" routerLink="/settings/reimbursement" routerLinkActive="active">🏦 Reimbursement /
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payment</a>
+      <a class="nav-link" routerLink="/settings/reimbursement" routerLinkActive="active">
+        🏦 Reimbursement / Payment
+      </a>
       <a class="nav-link" routerLink="/settings" routerLinkActive="active">⚙️ Settings</a>
 
-
+      <!-- ✅ Added logout button -->
+      <a class="nav-link" (click)="logout()">🚪 Logout</a>
     </nav>
+
     <div class="version">
       <p>Version 2.1.0</p>
       <p>&copy; 2025 ExpenseHub</p>
@@ -27,14 +37,18 @@
   <div class="main-content">
     <!-- Top Navbar -->
     <header class="top-navbar">
-      <input type="text" class="search-input" placeholder="🔍 Search expenses, employees, or requests..." />
+      <input
+        type="text"
+        class="search-input"
+        placeholder="🔍 Search expenses, employees, or requests..."
+      />
       <div class="user-actions">
         <div class="notification-bell">
           🔔
           <span class="badge">3</span>
         </div>
         <div class="user-profile">
-          <span class="role">Admin User</span>
+          <span class="role">{{ authService.getUser()?.firstName || 'User' }}</span>
           <span class="dropdown">▼</span>
         </div>
       </div>
@@ -46,3 +60,8 @@
     </main>
   </div>
 </div>
+
+<!-- ✅ Added fallback for when user is not logged in -->
+<ng-template #loginView>
+  <router-outlet></router-outlet>
+</ng-template>

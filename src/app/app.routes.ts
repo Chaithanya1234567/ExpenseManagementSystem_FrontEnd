@@ -3,26 +3,36 @@ import { Categories } from './categories/categories';
 import { Home } from './home/home';
 import { ExpenseComponent } from './expense/expense';
 import { Navbar } from './navbar/navbar';
-import { ReportComponent } from './report/report';  
+import { ReportComponent } from './report/report';
 import { ApprovalsComponent } from './approvals/approvals';
 import { EmployeeComponent } from './employee/employee';
 import { DepartmentComponent } from './department/department';
-import { App } from './app';
+import { LoginComponent } from './login/login';
+import { AuthGuard } from './login/auth.guard'; 
 
 export const routes: Routes = [
-    {path:'', component: Navbar,
+  // 👇 Default redirect to login
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  // Login page route
+  { path: 'login', component: LoginComponent },
+
+  // Protected routes
+  {
+    path: '',
+    component: Navbar,
+    canActivate: [AuthGuard],
     children: [
-    {path:'', component: Home},
-    {path:'categories', component: Categories},
-    {path:'expenses', component: ExpenseComponent},
-    {path:'reports', component: ReportComponent},
-    {path:'employees', component: EmployeeComponent},
-    {path:'departments', component: DepartmentComponent},
-    {path: 'approvals', component: ApprovalsComponent},
-
-    {path:'home', component: Home}
-     ]
+      { path: 'home', component: Home },
+      { path: 'categories', component: Categories },
+      { path: 'expenses', component: ExpenseComponent },
+      { path: 'reports', component: ReportComponent },
+      { path: 'employees', component: EmployeeComponent },
+      { path: 'departments', component: DepartmentComponent },
+      { path: 'approvals', component: ApprovalsComponent }
+    ]
   },
-  { path: '**', redirectTo: '' } // fallback
 
+  // Fallback
+  { path: '**', redirectTo: 'login' }
 ];
