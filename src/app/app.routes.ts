@@ -9,6 +9,8 @@ import { EmployeeComponent } from './employee/employee';
 import { DepartmentComponent } from './department/department';
 import { LoginComponent } from './login/login';
 import { AuthGuard } from './login/auth.guard'; 
+import { PaymentComponent } from './payment/payment';
+import { SettingsComponent } from './settings/settings';
 
 export const routes: Routes = [
   // 👇 Default redirect to login
@@ -29,7 +31,9 @@ export const routes: Routes = [
       { path: 'reports', component: ReportComponent },
       { path: 'employees', component: EmployeeComponent },
       { path: 'departments', component: DepartmentComponent },
-      { path: 'approvals', component: ApprovalsComponent }
+      { path: 'approvals', component: ApprovalsComponent },
+      { path: 'reimbursement', component: PaymentComponent},
+      { path: 'settings', component: SettingsComponent }
     ]
   },
 

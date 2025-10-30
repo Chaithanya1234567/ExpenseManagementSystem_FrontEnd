@@ -192,3 +192,29 @@ table tbody tr:hover {
   .btn-primary, .btn-delete { width: 100%; text-align: center; }
   table th, table td { padding: 10px; font-size: 13px; }
 }
+
+.payment-status {
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* Green for Paid */
+.payment-status.paid {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* Yellow for Pending */
+.payment-status.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Gray for Unpaid / null */
+.payment-status.unpaid,
+.payment-status.undefined {
+  background-color: #e2e3e5;
+  color: #383d41;
+}

@@ -69,7 +69,7 @@ export class ApprovalsComponent implements OnInit {
   // Method to fetch approver's full name based on ID
   private getApproverName(approverId: number): Observable<string> {
   return this.approvalService.getEmployeeNameById(approverId).pipe(
-    map((employee: Employee) => `${employee.firstName} ${employee.lastName}`)  // Now mapping Employee to string
+    map((employee: Employee) => `${employee.firstName} ${employee.lastName}`)  
   );
 }
 

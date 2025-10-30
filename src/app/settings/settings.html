@@ -1,0 +1,22 @@
+<section class="settings-section">
+  <h2>Application Settings</h2>
+
+  <div class="setting-item">
+    <label>Theme</label>
+    <button (click)="toggleTheme()">
+      Switch to {{ theme === 'light' ? 'Dark' : 'Light' }} Mode
+    </button>
+  </div>
+
+  <div class="setting-item">
+    <label>Email Notifications</label>
+    <label class="switch">
+      <input type="checkbox" [(ngModel)]="notificationsEnabled">
+      <span class="slider round"></span>
+    </label>
+  </div>
+
+  <div class="actions">
+    <button (click)="saveSettings()" class="btn-save">Save Settings</button>
+  </div>
+</section>

@@ -53,6 +53,7 @@
             <th>Description</th>
             <th>Receipt</th>
             <th>Status</th>
+            <th>PaymentStatus</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -68,6 +69,11 @@
             </td>
             <td>
               <span class="status" [ngClass]="expense.status.toLowerCase()">{{expense.status}}</span>
+            </td>
+            <td>
+              <span class="payment-status" [ngClass]="expense.paymentStatus?.toLowerCase()">
+                {{ expense.paymentStatus }}
+              </span>
             </td>
             <td>
               <button class="btn-delete" (click)="deleteExpense(expense.expenseId)">Delete</button>&nbsp;

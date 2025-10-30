@@ -1,0 +1,44 @@
+<section class="payments section">
+  <h2>Payment Processing</h2>
+
+  <p *ngIf="message" class="success-msg">{{ message }}</p>
+
+  <div *ngIf="loading">Loading approved expenses...</div>
+
+  <table *ngIf="!loading && approvedExpenses.length > 0" class="payment-table">
+    <thead>
+      <tr>
+        <th>Expense ID</th>
+        <th>Employee</th>
+        <th>Expense Type</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Payment Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let exp of approvedExpenses">
+        <td>{{ exp.expenseId }}</td>
+        <td>{{ exp.employeeName }}</td>
+        <td>{{ exp.expenseTypeName }}</td>
+        <td>{{ exp.amount | currency:'INR' }}</td>
+        <td>{{ exp.status }}</td>
+        <td>{{ exp.paymentStatus }}</td>
+        <td>
+          <button 
+            *ngIf="exp.paymentStatus !== 'Paid'"
+            (click)="markAsPaid(exp)"
+            class="btn btn-primary">
+            Mark as Paid
+          </button>
+          <span *ngIf="exp.paymentStatus === 'Paid'" class="paid-text">Paid</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!loading && approvedExpenses.length === 0" class="no-data">
+    No approved expenses awaiting payment.
+  </p>
+</section>

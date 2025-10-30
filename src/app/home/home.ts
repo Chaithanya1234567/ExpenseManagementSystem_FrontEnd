@@ -10,6 +10,10 @@ import { signal } from '@angular/core';
 import { DashboardStats } from './dashboard.service';
 import { DashboardService } from './dashboard.service';
 import { Component,OnInit,Signal } from '@angular/core';  
+import { finalize } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 
 
@@ -93,23 +97,91 @@ export class Home implements OnInit {
     });
   }
   approveRequest(request: PendingRequest) {
-    const approverName = 'Manager';
-    const payload = { expenseId: request.expenseId, approverId: request.approverId } as any;
-    this.approvalService.approve(payload).subscribe({
-      next: () => this.refreshDashboard(),
-      
-      error: (err: any) => console.error('Error approving expense', err)
-    });
-  }
+  const approverId = 22; 
+  this.loading.set(true);
 
-  rejectRequest(request: PendingRequest) {
-    const approverName = 'Manager';
-    const payload = { expenseId: request.expenseId, approverId: request.approverId } as any;
-    this.approvalService.reject(payload).subscribe({
-      next: () => this.refreshDashboard(),
-      error: (err : any) => console.error('Error rejecting expense', err)
-    });
-  }
+  this.approvalService.getEmployeeNameById(approverId).pipe(
+    switchMap((employee: any) => {
+      const approverName = `${employee.firstName} ${employee.lastName}`;
+      const payload = {
+        expenseId: request.expenseId,
+        approverId,
+        approverName,
+        approvalStatus: 'Approved',
+        actionDate: new Date().toISOString(),
+        employeeId: (request as any).employeeId || null, 
+      };
+
+      // Optimistic UI update
+      const prevList = [...this.pendingRequestsList];
+      this.pendingRequestsList = this.pendingRequestsList.filter(r => r.expenseId !== request.expenseId);
+
+      return this.approvalService.approve(payload).pipe(
+        catchError(err => {
+          console.error('Approve failed:', err);
+          alert('Failed to approve expense. Try again.');
+          // revert on failure
+          this.pendingRequestsList = prevList;
+          return of(null);
+        })
+      );
+    }),
+    finalize(() => this.loading.set(false))
+  ).subscribe({
+    next: (res) => {
+      if (res) {
+        this.refreshDashboard();
+      }
+    }
+  });
+}
+
+
+rejectRequest(request: PendingRequest) {
+  const approverId = 22;
+  const reason = prompt(`Reject expense #${request.expenseId}. Optional comment:`, '');
+  const confirmed = confirm(`Are you sure you want to reject expense #${request.expenseId}?`);
+  if (!confirmed) return;
+
+  this.loading.set(true);
+
+  this.approvalService.getEmployeeNameById(approverId).pipe(
+    switchMap((employee: any) => {
+      const approverName = `${employee.firstName} ${employee.lastName}`;
+      const payload = {
+        expenseId: request.expenseId,
+        approverId,
+        approverName,
+        approvalStatus: 'Rejected',
+        comments: reason || null,
+        actionDate: new Date().toISOString(),
+        employeeId: (request as any).employeeId || null
+      };
+
+      // Optimistic UI update
+      const prevList = [...this.pendingRequestsList];
+      this.pendingRequestsList = this.pendingRequestsList.filter(r => r.expenseId !== request.expenseId);
+
+      return this.approvalService.reject(payload).pipe(
+        catchError(err => {
+          console.error('Reject failed:', err);
+          alert('Failed to reject expense. Try again.');
+          // revert on failure
+          this.pendingRequestsList = prevList;
+          return of(null);
+        })
+      );
+    }),
+    finalize(() => this.loading.set(false))
+  ).subscribe({
+    next: (res) => {
+      if (res) {
+        this.refreshDashboard();
+      }
+    }
+  });
+}
+
 
   refreshDashboard() {
     this.loadDashboardData();
