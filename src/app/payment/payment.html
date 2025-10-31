@@ -1,44 +1,55 @@
 <section class="payments section">
-  <h2>Payment Processing</h2>
+  <div class="header">
+    <h2>💳 Payment Processing</h2>
+    <p>Manage and process approved expense payments</p>
+  </div>
 
-  <p *ngIf="message" class="success-msg">{{ message }}</p>
+  <p *ngIf="message" class="alert success">{{ message }}</p>
 
-  <div *ngIf="loading">Loading approved expenses...</div>
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div> Loading approved expenses...
+  </div>
 
-  <table *ngIf="!loading && approvedExpenses.length > 0" class="payment-table">
-    <thead>
-      <tr>
-        <th>Expense ID</th>
-        <th>Employee</th>
-        <th>Expense Type</th>
-        <th>Amount</th>
-        <th>Status</th>
-        <th>Payment Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let exp of approvedExpenses">
-        <td>{{ exp.expenseId }}</td>
-        <td>{{ exp.employeeName }}</td>
-        <td>{{ exp.expenseTypeName }}</td>
-        <td>{{ exp.amount | currency:'INR' }}</td>
-        <td>{{ exp.status }}</td>
-        <td>{{ exp.paymentStatus }}</td>
-        <td>
-          <button 
-            *ngIf="exp.paymentStatus !== 'Paid'"
-            (click)="markAsPaid(exp)"
-            class="btn btn-primary">
-            Mark as Paid
-          </button>
-          <span *ngIf="exp.paymentStatus === 'Paid'" class="paid-text">Paid</span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper" *ngIf="!loading && approvedExpenses.length > 0">
+    <table class="payment-table">
+      <thead>
+        <tr>
+          <th>Expense ID</th>
+          <th>Employee</th>
+          <th>Expense Type</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Payment Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exp of approvedExpenses">
+          <td>#{{ exp.expenseId }}</td>
+          <td>{{ exp.employeeName }}</td>
+          <td>{{ exp.expenseTypeName }}</td>
+          <td>{{ exp.amount | currency:'INR' }}</td>
+          <td>
+            <span class="badge" [ngClass]="exp.status.toLowerCase()">{{ exp.status }}</span>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="exp.paymentStatus.toLowerCase()">{{ exp.paymentStatus }}</span>
+          </td>
+          <td>
+            <button 
+              *ngIf="exp.paymentStatus !== 'Paid'"
+              (click)="markAsPaid(exp)"
+              class="btn btn-primary">
+              💰 Mark as Paid
+            </button>
+            <span *ngIf="exp.paymentStatus === 'Paid'" class="paid-text">✅ Paid</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <p *ngIf="!loading && approvedExpenses.length === 0" class="no-data">
-    No approved expenses awaiting payment.
+    💤 No approved expenses awaiting payment.
   </p>
 </section>
