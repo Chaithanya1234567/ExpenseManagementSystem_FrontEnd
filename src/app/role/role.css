@@ -1,0 +1,157 @@
+/* ===== Layout ===== */
+.role-section {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.role-section h2 {
+  text-align: center;
+  font-size: 28px;
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Add Role Section ===== */
+.add-role {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.add-role input {
+  width: 60%;
+  padding: 10px 15px;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.add-role input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+.add-role button {
+  background: linear-gradient(135deg, #007bff, #00a8ff);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.add-role button:hover {
+  background: linear-gradient(135deg, #0056b3, #0080ff);
+  transform: translateY(-2px);
+}
+
+/* ===== Table Styling ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+background: linear-gradient(180deg, #4b6cb7 0%, #182848 100%);
+  color: #fff;
+}
+
+thead th {
+  padding: 12px 15px;
+  font-size: 16px;
+  text-align: left;
+}
+
+tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+  background: #f9f9f9;
+}
+
+td {
+  padding: 12px 15px;
+  font-size: 15px;
+}
+
+td input {
+  width: 90%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+
+td input:focus {
+  border-color: #007bff;
+}
+
+/* ===== Buttons in Table ===== */
+button {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  margin-right: 6px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:nth-child(1) {
+  background-color: #1cc88a;
+  color: #fff;
+}
+
+button:nth-child(2) {
+  background-color: #e74a3b;
+  color: #fff;
+}
+
+button:nth-child(3) {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .role-section {
+    padding: 20px;
+  }
+
+  .add-role {
+    flex-direction: column;
+  }
+
+  .add-role input {
+    width: 100%;
+  }
+
+  table {
+    font-size: 14px;
+  }
+}

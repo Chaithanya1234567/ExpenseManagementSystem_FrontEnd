@@ -1,0 +1,33 @@
+<section class="role-section">
+  <h2>Role Management</h2>
+
+  <div class="add-role">
+    <input type="text" [(ngModel)]="newRole" placeholder="Enter role name">
+    <button (click)="addRole()">Add Role</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Role ID</th>
+        <th>Role Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let role of roles">
+        <td>{{ role.roleId }}</td>
+        <td *ngIf="editRoleId !== role.roleId">{{ role.roleName }}</td>
+        <td *ngIf="editRoleId === role.roleId">
+          <input [(ngModel)]="editRoleName">
+        </td>
+        <td>
+          <button *ngIf="editRoleId !== role.roleId" (click)="startEdit(role)">Edit</button>
+          <button *ngIf="editRoleId === role.roleId" (click)="updateRole()">Save</button>
+          <button (click)="deleteRole(role.roleId)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+

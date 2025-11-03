@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login';
 import { AuthGuard } from './login/auth.guard'; 
 import { PaymentComponent } from './payment/payment';
 import { SettingsComponent } from './settings/settings';
+import { RoleComponent } from './role/role';
 
 export const routes: Routes = [
   // 👇 Default redirect to login
@@ -33,7 +34,8 @@ export const routes: Routes = [
       { path: 'departments', component: DepartmentComponent },
       { path: 'approvals', component: ApprovalsComponent },
       { path: 'reimbursement', component: PaymentComponent},
-      { path: 'settings', component: SettingsComponent }
+      { path: 'settings', component: SettingsComponent },
+      { path: 'roles', component: RoleComponent }
     ]
   },
 
